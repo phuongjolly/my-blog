@@ -1,0 +1,106 @@
+@import "~semantic-ui-css/semantic.css";
+
+body {
+  background:#EDEDED;
+  padding: 22px;
+
+}
+
+.App {
+  background: #FFFFFF;
+  color: #242321;
+  font-family: 'Questrial';
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.33333333;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.App-header {
+  background-color: #222;
+  height: 150px;
+  padding: 20px;
+  color: white;
+}
+
+.App-title {
+  font-size: 1.5em;
+}
+
+
+.App-intro {
+  font-size: large;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.main-header {
+    padding: 50px 15px 50px 15px;
+    position: relative;
+
+}
+
+.header-logo {
+    font-size: 32px;
+    float: left;
+}
+
+.header-logo img {
+  width: 43px;
+  height: 38px;
+}
+
+.menu-column {
+  float: right;
+}
+
+.portfolio-container {
+    display: flex;
+    flex-flow: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding-left: 15px;
+    padding-right: 15px;
+    color: #242321;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.portfolio-title-holder {
+    display: flex;
+    flex-flow: column;
+    align-items: left;
+
+}
+
+.portfolio-title {
+    margin-top: 20px;
+    font-size: 26px;
+}
+
+.portfolio-content {
+    margin-top: 20px;
+    font-size: 16px;
+    color: #666;
+    line-height: 26px;
+}
+
+.portfolio-menu {
+    display: flex;
+    flex-flow: row;
+    justify-content: flex-end;
+}
+
+.portfolio-menu .item {
+    margin-left: 20px;
+    color: #666;
+    font-size: 16px;
+}
+

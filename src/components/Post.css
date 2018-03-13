@@ -1,0 +1,26 @@
+.editor {
+    width: 600px;
+    margin: 0 auto;
+}
+.superFancyBlockquote {
+    color: #999;
+    font-family: 'Hoefler Text', Georgia, serif;
+    font-style: italic;
+    text-align: center;
+}
+
+.align-left > div {
+    text-align: left;
+}
+
+.align-right > div  {
+    text-align: right;
+}
+
+.align-center > div  {
+    text-align: center;
+}
+
+.align-justify > div  {
+    text-align: justify;
+}
