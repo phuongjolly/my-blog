@@ -1,10 +1,11 @@
 .page-container {
     display: flex;
     flex-flow: row;
-    justify-content: space-around;
+    justify-content: space-between;
     flex-grow: 3;
     align-items: flex-start;
     align-content: space-around;
+    flex-wrap: wrap;
 }
 
 .page-container .item-box {
@@ -14,6 +15,7 @@
     color: #666;
     align-items: flex-start;
     padding: 15px;
+    width: 33%;
 }
 
 .page-container .item-box .photo {

@@ -1,39 +1,40 @@
 import React from "react"
 import "./PageContent.css"
-import itemdemo1 from "../Resources/images/item-demo1.jpg"
-import itemdemo2 from "../Resources/images/item-demo2.jpg"
-import itemdemo3 from "../Resources/images/item-demo3.jpg"
+import itemdemo1 from "../Resources/images/item-demo1.jpg";
+import itemdemo2 from "../Resources/images/item-demo2.jpg";
+import itemdemo3 from "../Resources/images/item-demo3.jpg";
+import {Link} from "react-router-dom";
+
+const images = [itemdemo1, itemdemo2, itemdemo3];
 
 class PageContent extends React.Component {
+    state = {
+        posts: []
+    };
+
+    async componentDidMount() {
+        const response = await fetch("/api/posts");
+        const posts = await response.json();
+        this.setState({posts});
+    }
     render () {
         return (
             <div className="page-container">
-                <div className="item-box">
-                    <div className="photo">
-                        <img src={itemdemo1} alt="myBlog"/>
+                {this.state.posts.map((post, index) => (
+                    <div className="item-box" key={post.id}>
+                        <div className="photo">
+                            <Link to="/post/">
+                                <img src={images[index % 3]} alt="myBlog"/>
+                            </Link>
+                        </div>
+                        <div className="info-header">{post.title}</div>
+                        <div className="info-detail">
+                            {post.description}
+                        </div>
                     </div>
-
-                        <div className="info-header">My Blog</div>
-                        <div className="info-detail">About my daily routine and sharing my knowledge with people around me and on the internet</div>
-
-                </div>
-                <div className="item-box">
-                    <div className="photo">
-                        <img src={itemdemo2} alt="my Travelling" />
-                    </div>
-                    <div className="info-header">Travelling</div>
-                    <div className="info-detail">My first project. My main charge is as a font end developer.</div>
-
-                </div>
-                <div className="item-box">
-                    <div className="photo">
-                        <img src={itemdemo3} alt="my Articles"/>
-                    </div>
-                    <div className="info-header">Travelling</div>
-                    <div className="info-detail">My first project. My main charge is as a font end developer.</div>
-
-                </div>
+                ))}
             </div>
+
         );
     }
 }

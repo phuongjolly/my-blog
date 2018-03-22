@@ -1,7 +1,22 @@
-.editor {
+.editor-root{
+    display: block;
     width: 600px;
-    margin: 0 auto;
+    height: auto;
+    margin-left: 200px;
+
 }
+.editor-content{
+    margin-top: 15px;
+    border-top: 1px solid rgba(34, 36, 38, 0.15);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    letter-spacing: 0.05em;
+    color: rgba(0, 0, 0, 0.85);
+
+}
+.editor {
+    padding: 10px;
+}
+
 .superFancyBlockquote {
     color: #999;
     font-family: 'Hoefler Text', Georgia, serif;
@@ -23,4 +38,17 @@
 
 .align-justify > div  {
     text-align: justify;
+}
+
+.editorLink > span{
+    text-decoration: underline;
+    color: #3B5998;
+}
+
+.post-title {
+    margin-bottom: 10px;
+}
+
+.post-description {
+    margin-bottom: 10px;
 }

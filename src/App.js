@@ -1,34 +1,45 @@
 import React, { Component } from 'react';
 import './App.css';
-import Header from "./components/Header";
 import PageContent from "./components/PageContent";
 import Post from "./components/Post";
+import {Route, BrowserRouter as Router} from "react-router-dom";
+import {Switch} from "react-router";
+import Header from "./components/Header";
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-          <div className="main-header">
-              <Header/>
-          </div>
-          <div className="portfolio-container">
-              <div className="portfolio-title-holder">
-                  <div className="portfolio-title">Portfolio</div>
-                  <div className="portfolio-content">My all projects will be presented here</div>
-              </div>
-              <div className="portfolio-menu">
-                  <div className="item">Home</div>
-                  <div className="item">Project</div>
-                  <div className="item">Articles</div>
-                  <div className="item">About</div>
-              </div>
-          </div>
-          <PageContent/>
-         <Post/>
+    render() {
+        return (
+            <Router>
+                <div className="App">
+                    <Header />
+                    <Switch>
+                        <Route path="/post" component={Post} />
+                        <Route component={PageContent}/>
+                    </Switch>
+                </div>
+            </Router>
+        );
+    }
+    /*state = {
+        users: []
+    };
 
-      </div>
-    );
-  }
+    async componentDidMount() {
+        const response = await fetch('/api/users');
+        const users = await response.json();
+        this.setState({users});
+    }
+
+    render(){
+      return (
+          <div className="App">
+              <h1>Users</h1>
+              {this.state.users.map(user =>
+                  <div key={user.id}>user: {user.name} Password: {user.password}</div>
+              )}
+          </div>
+      );
+    }*/
 }
 
 export default App;
