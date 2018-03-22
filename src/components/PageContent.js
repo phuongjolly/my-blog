@@ -23,7 +23,7 @@ class PageContent extends React.Component {
                 {this.state.posts.map((post, index) => (
                     <div className="item-box" key={post.id}>
                         <div className="photo">
-                            <Link to="/post/">
+                            <Link to={`/posts/${post.id}`}>
                                 <img src={images[index % 3]} alt="myBlog"/>
                             </Link>
                         </div>

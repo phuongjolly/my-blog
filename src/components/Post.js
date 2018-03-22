@@ -1,6 +1,6 @@
 import React from "react"
 import "draft-js/dist/Draft.css"
-import {convertToRaw, Editor, EditorState, RichUtils, AtomicBlockUtils, CompositeDecorator, Entity} from "draft-js"
+import {convertToRaw, convertFromRaw, Editor, EditorState, RichUtils, AtomicBlockUtils, CompositeDecorator, Entity} from "draft-js"
 import "./Post.css"
 import ExtendedRichUtils, {ALIGNMENT_DATA_KEY} from "./plugins/ExtendedRichUtils";
 import MyMediaEditor from "./MyMediaEditor";
@@ -31,8 +31,25 @@ class Post extends React.Component {
         this.editor.focus();
     };
 
-    componentDidMount(){
+    async componentDidMount(){
         this.focus();
+        const {id} = this.props.match.params;
+        const response = await fetch(`/api/posts/${id}`);
+        const data = await response.json();
+
+        if(data){
+            this.setState({
+                title: data.title,
+                description: data.description,
+                editorState: EditorState.createWithContent(convertFromRaw(JSON.parse(data.content)))
+            });
+        } else {
+            this.setState({
+                title: '',
+                description: '',
+                editorState: EditorState.createEmpty()
+            });
+        }
     }
 
     handleKeyCommand = (command, editorState) => {
@@ -184,13 +201,13 @@ class Post extends React.Component {
         return (
             <div className="editor-root">
                 <div>
-                    <div class="ui fluid input post-title">
+                    <div className="ui fluid input post-title">
                         <input type="text" placeholder="Title"
                                onChange={(event) => this.setState({title: event.target.value})}
                               value={this.state.title}
                         />
                     </div>
-                    <div class="ui fluid input post-description">
+                    <div className="ui fluid input post-description">
                         <input type="text" placeholder="Description"
                                onChange={(event) => this.setState({description: event.target.value})}
                                value={this.state.description}
