@@ -1,6 +1,6 @@
 import React from "react";
-import "./Post.css"
-import {Modal, Button, Header, Image} from 'semantic-ui-react'
+import "./PostEditor.css"
+import {Modal} from 'semantic-ui-react'
 
 class MyMediaEditor extends React.Component {
     state = {
