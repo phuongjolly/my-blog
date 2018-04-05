@@ -11,7 +11,7 @@ class MyImageUpload extends React.Component {
         let reader = new FileReader();
         let file = e.target.files[0];
         const ext = file['name'].substring(file['name'].lastIndexOf('.') + 1).toLowerCase();
-        if(file && (ext == 'jpg' || ext == 'jpeg' || ext == 'png' || ext == 'gif')){
+        if(file && (ext === 'jpg' || ext === 'jpeg' || ext === 'png' || ext === 'gif')){
             reader.onload = () => {
                 this.setState({
                     file: file,
@@ -26,9 +26,7 @@ class MyImageUpload extends React.Component {
 
     render(){
         return (
-            <div>
-                <input type="file" onChange={(e) => this.onImageChange(e)} />
-            </div>
+            <input type="file" onChange={(e) => this.onImageChange(e)} />
         );
     }
 }

@@ -1,6 +1,7 @@
 import React from "react"
 import "./PageContent.css"
 import {Link} from "react-router-dom";
+import {get} from "./Http"
 
 class PageContent extends React.Component {
     state = {
@@ -8,8 +9,7 @@ class PageContent extends React.Component {
     };
 
     async componentDidMount() {
-        const response = await fetch("/api/posts");
-        const posts = await response.json();
+        const posts = await get("/api/posts");
         this.setState({posts});
     }
     render () {
@@ -28,8 +28,12 @@ class PageContent extends React.Component {
                         </div>
                     </div>
                 ))}
+                <div className="addNew">
+                    <Link to={`/posts/add`}>
+                        <i className="plus icon"></i>
+                    </Link>
+                </div>
             </div>
-
         );
     }
 }

@@ -1,8 +1,44 @@
 import React from "react"
+import {Link} from "react-router-dom";
+import {get} from "./Http";
+import store from "./stores/store";
+import {LOGOUT_ACTION} from "./stores/authenticationReducer";
 
 class Header extends React.Component {
 
+    state = {
+        currentUserName: '',
+    };
+
+    async componentDidMount(){
+        store.subscribe(() => {
+            const {currentUser} = store.getState().authentication;
+            if (currentUser) {
+                this.setState({currentUserName: currentUser.name});
+            } else {
+                this.setState({currentUserName: null});
+            }
+        });
+    }
+
+    async onLogoutClick() {
+        await get("/api/users/logout");
+        store.dispatch({
+            type: LOGOUT_ACTION
+        })
+    }
+
     render() {
+        let $helloMessage;
+        console.log("current user name: " + this.state.currentUserName);
+        if(this.state.currentUserName){
+            $helloMessage = (
+                <div>
+                    <h2>Hello </h2>
+                    <h1>{this.state.currentUserName}</h1>
+                    <button className="ui button" onClick={() => this.onLogoutClick()}>Logout</button>
+                </div>);
+        }
         return (
             <div className="">
                 <div className="main-header">
@@ -12,7 +48,7 @@ class Header extends React.Component {
                             alt="logo"/>
                     </div>
                     <div className="menu-column">
-                        <i className="align justify icon" />
+                        {$helloMessage}
                     </div>
                 </div>
                 <div className="portfolio-container">
@@ -21,7 +57,11 @@ class Header extends React.Component {
                         <div className="portfolio-content">My all projects will be presented here</div>
                     </div>
                     <div className="portfolio-menu">
-                        <div className="item">Home</div>
+                        <div className="item">
+                            <Link to={'/'}>
+                                Home
+                            </Link>
+                        </div>
                         <div className="item">Project</div>
                         <div className="item">Articles</div>
                         <div className="item">About</div>

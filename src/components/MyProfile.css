@@ -1,0 +1,15 @@
+.myProfile {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    padding: 15px;
+}
+
+.myProfile .name {
+    font-size: 25px;
+}
+
+.myProfile .email {
+    color: #0e8c8c;
+}
+

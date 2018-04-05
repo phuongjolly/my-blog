@@ -1,0 +1,115 @@
+.post{
+    padding: 50px;
+    display: flex;
+    flex-flow: column;
+    margin: 0 50px 0 50px;
+}
+.post .post-title {
+    margin-bottom: 20px;
+}
+
+.post-title h1{
+    font-size: 26px;
+    color: #242321;
+    font-family: 'Montserrat';
+    text-align: center;
+}
+
+.post-description p {
+    color: #666;
+    font-size: 16px;
+    line-height: 26px;
+    text-align: center;
+}
+
+.post .post-content{
+    padding: 15px;
+    font-size: 15px;
+    font-family: 'Questrial';
+    font-weight: 400;
+}
+
+.post .post-button{
+    display: flex;
+    flex-flow: row;
+    justify-content: flex-end;
+}
+
+.post .social-button {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 40px;
+}
+
+.post .social-button .likes{
+    background-color: #eee;
+    position: relative;
+    color: #333;
+    text-align: center;
+    font-size: 18px;
+    padding-top: 14px;
+    text-decoration: none;
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    background-clip: padding-box;
+}
+
+.post .social-button .likes p {
+    font-weight: 400;
+    font-size: 14px;
+}
+
+.post .social-button .shares {
+    margin-top: 35px;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+}
+
+.post .social-button .shares h4{
+    font-size: 18px;
+    font-weight: 300;
+    font-family: 'Montserrat';
+}
+
+.social-links {
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+}
+
+.social-links a{
+    margin-right: 50px;
+    color: #898989;
+}
+
+.post .navigation {
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+    font-family: 'Questrial';
+    font-weight: 400;
+    font-size: 20px;
+    margin-top: 60px;
+    padding: 0 15px 0 15px;
+}
+
+.post .navigation .previous {
+    color: #898989;
+}
+
+.post .navigation .next {
+    color: #242321;
+}
+
+.post .post-comments {
+    margin-top: 40px;
+    padding: 15px;
+}
+
+.post .login-button {
+    margin-top: 20px;
+}

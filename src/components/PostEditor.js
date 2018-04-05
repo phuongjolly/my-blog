@@ -1,10 +1,16 @@
 import React from "react"
 import "draft-js/dist/Draft.css"
-import {convertToRaw, convertFromRaw, Editor, EditorState, RichUtils, AtomicBlockUtils, CompositeDecorator, Entity} from "draft-js"
 import "./PostEditor.css"
+import {
+    convertToRaw, convertFromRaw, Editor,
+    EditorState, RichUtils, AtomicBlockUtils,
+    CompositeDecorator, Entity
+    } from "draft-js";
 import ExtendedRichUtils, {ALIGNMENT_DATA_KEY} from "./plugins/ExtendedRichUtils";
 import MyMediaEditor from "./MyMediaEditor";
 import MyImageUpload from "./MyImageUpload";
+import {Redirect} from "react-router-dom";
+import {get} from "./Http"
 
 class PostEditor extends React.Component {
 
@@ -23,7 +29,9 @@ class PostEditor extends React.Component {
         avatarUrl: '',
         isSelectingMedia: false,
         urlType: '',
-        message: undefined
+        message: undefined,
+        redirectToPost: false,
+        previousId: 0
     };
 
     onChange = (editorState) => {
@@ -35,26 +43,36 @@ class PostEditor extends React.Component {
     };
 
     async componentDidMount(){
-        console.log("dimound is call");
         this.focus();
-        const {id} = this.props.match.params;
-        const response = await fetch(`/api/posts/${id}`);
-        const data = await response.json();
 
-        if(data){
-            this.setState({
-                id: data.id,
-                title: data.title,
-                description: data.description,
-                avatarUrl: data.avatarUrl,
-                editorState: EditorState.createWithContent(convertFromRaw(JSON.parse(data.content)))
-            });
+        const {id} = this.props.match.params;
+        if(id > 0) {
+            const data = await get(`/api/posts/${id}`);
+
+            if(data){
+                this.setState({
+                    id: data.id,
+                    title: data.title,
+                    description: data.description,
+                    avatarUrl: data.avatarUrl,
+                    editorState: EditorState.createWithContent(convertFromRaw(JSON.parse(data.content)), this.decorator),
+                    isSelectingMedia: false,
+                    urlType: '',
+                    previousId: data.id
+                });
+            }
         } else {
+            const data = await get(`/api/posts/latest`)
+            const newId = (data + 1);
             this.setState({
+                id: newId,
                 title: '',
                 description: '',
                 avatarUrl: '',
-                editorState: EditorState.createEmpty()
+                editorState: EditorState.createEmpty(this.decorator),
+                isSelectingMedia: false,
+                urlType: '',
+                previousId: 0
             });
         }
     }
@@ -122,15 +140,15 @@ class PostEditor extends React.Component {
 
     selectedMediaUrl(url) {
         const {editorState, urlType} = this.state;
-
         let entityKey;
-
         if (urlType === 'LINK') {
+            console.log("selected LINK" + url);
             entityKey = Entity.create(
                 urlType,
                 'MUTABLE',
                 {url: url}
-            );
+                );
+            console.log("set state link" + entityKey.url);
         } else {
             entityKey = Entity.create(
                 urlType,
@@ -139,9 +157,9 @@ class PostEditor extends React.Component {
             );
         }
 
-
         if(urlType === 'LINK'){
-            console.log("is link");
+            console.log("current selection: " + editorState.getSelection());
+
             this.setState({
                 editorState: RichUtils.toggleLink(
                     editorState,
@@ -185,7 +203,8 @@ class PostEditor extends React.Component {
             avatarUrl: this.state.avatarUrl,
             content: JSON.stringify(convertToRaw(this.state.editorState.getCurrentContent())),
             likeCount: 0,
-            commentCount: 0
+            commentCount: 0,
+            previousId: 0
         };
 
         const response = await fetch("/api/posts", {
@@ -196,8 +215,26 @@ class PostEditor extends React.Component {
             }
         });
 
+        if(response){
+            this.setState({
+                message: "Post editor !",
+                redirectToPost: true,
+            });
+        }
+
+    }
+
+    async onDiscardClick() {
         this.setState({
-            message: "Post editor !"
+            editorState: EditorState.createEmpty(this.decorator),
+            id: 0,
+            title: '',
+            description: '',
+            avatarUrl: '',
+            isSelectingMedia: false,
+            urlType: '',
+            message: undefined,
+            redirectToPost: true
         });
     }
 
@@ -216,6 +253,15 @@ class PostEditor extends React.Component {
             $avatarPreview = <img src="https://demokaliumsites-laborator.netdna-ssl.com/freelancer/wp-content/uploads/2015/03/8tracks_covers01_905-655x545.jpg" />;
         }
 
+        if (this.state.redirectToPost) {
+            if (this.state.previousId > 0) {
+                return (<Redirect to={`/posts/${this.state.previousId}`}/>);
+            }
+            else {
+                return (<Redirect to={`/posts`}/>);
+            }
+        }
+
         return (
             <div className="editor-root">
                 <div>
@@ -232,7 +278,7 @@ class PostEditor extends React.Component {
                         />
                     </div>
                 </div>
-                <div>
+                <div className="post-avatar">
                     <MyImageUpload selectedPostAvatar={(url) => this.selectedPostAvatar(url)}/>
                     {$avatarPreview}
                 </div>
@@ -295,13 +341,10 @@ class PostEditor extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div>
-                    <button className="ui primary button" onClick={() => this.onSaveClick()}>
-                        Save
-                    </button>
-                    <button className="ui button">
-                        Discard
-                    </button>
+                <div className="ui buttons">
+                    <button className="ui button" onClick={() => this.onDiscardClick()}>Discard</button>
+                    <div className="or"></div>
+                    <button className="ui positive button" onClick={() => this.onSaveClick()}>Save</button>
                 </div>
             </div>
         );

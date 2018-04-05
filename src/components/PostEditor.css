@@ -15,6 +15,8 @@
 }
 .editor {
     padding: 10px;
+    display: block;
+    position: relative;
 }
 
 .superFancyBlockquote {
@@ -24,20 +26,32 @@
     text-align: center;
 }
 
-.align-left > div {
+.editor .align-left,
+.editor .align-left >div,
+.editor .align-left img {
     text-align: left;
+
 }
 
-.align-right > div  {
+.editor .align-right,
+.editor .align-right >div,
+.editor .align-right img {
     text-align: right;
+
 }
 
-.align-center > div  {
+.editor .align-center,
+.editor .align-center >div,
+.editor .align-center img {
     text-align: center;
+
 }
 
-.align-justify > div  {
+.editor .align-justify,
+.editor .align-justify >div,
+.editor .align-justify img {
     text-align: justify;
+
 }
 
 .editorLink > span{
@@ -51,4 +65,9 @@
 
 .post-description {
     margin-bottom: 10px;
+}
+
+.post-avatar img{
+    width: 300px;
+    height: 300px;
 }

@@ -7,12 +7,13 @@ body {
 }
 
 .App {
-  background: #FFFFFF;
+  background: #ededed;
   color: #242321;
   font-family: 'Questrial';
   font-weight: 400;
   font-size: 15px;
   line-height: 1.33333333;
+    padding: 30px;
 }
 
 .App-logo {
@@ -104,3 +105,22 @@ body {
     font-size: 16px;
 }
 
+.wrapper {
+    background-color: #FFFFFF;
+    padding-bottom: 100px;
+}
+
+.footer {
+    background-color: #eee;
+    display: flex;
+    flex-flow: column;
+    margin-top: 30px;
+    padding: 40px 0 40px 0;
+    font-size: 15px;
+    color: #898989;
+}
+
+.footer .copyright {
+    margin-top: 40px;
+    text-align: center;
+}
