@@ -179,11 +179,11 @@ class Post extends React.Component {
                    <div className="ui threaded comments">
                        <h3 className="ui dividing header">Comments</h3>
                        {this.state.comments.map((comment) => (
-                           <div className="comment">
+                           <div className="comment" key={comment.id}>
                                <a className="avatar">
                                    <img src="https://semantic-ui.com/images/avatar/small/matt.jpg" alt="avatar"/>
                                </a>
-                               <div className="content" key={comment.id}>
+                               <div className="content" >
                                    <a className="author">{comment.user.name}</a>
                                    <div className="metadata">
                                        <span className="date">{comment.date}</span>
