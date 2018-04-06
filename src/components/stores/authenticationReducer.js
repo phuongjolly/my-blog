@@ -26,3 +26,9 @@ export function login(currentUser) {
     }
 }
 
+export function logout() {
+    return {
+        type: LOGOUT_ACTION
+    }
+}
+

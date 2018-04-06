@@ -1,43 +1,26 @@
 import React from "react"
 import {Link} from "react-router-dom";
 import {get} from "./Http";
-import store from "./stores/store";
-import {LOGOUT_ACTION} from "./stores/authenticationReducer";
+import {logout} from "./stores/authenticationReducer";
+import {connect} from "react-redux";
 
 class Header extends React.Component {
 
-    state = {
-        currentUserName: '',
-    };
-
-    async componentDidMount(){
-        store.subscribe(() => {
-            const {currentUser} = store.getState().authentication;
-            if (currentUser) {
-                this.setState({currentUserName: currentUser.name});
-            } else {
-                this.setState({currentUserName: null});
-            }
-        });
-    }
-
     async onLogoutClick() {
         await get("/api/users/logout");
-        store.dispatch({
-            type: LOGOUT_ACTION
-        })
+        this.props.logout();
     }
 
     render() {
         let $helloMessage;
-        console.log("current user name: " + this.state.currentUserName);
-        if(this.state.currentUserName){
+        if(this.props.currentUser){
             $helloMessage = (
                 <div>
                     <h2>Hello </h2>
-                    <h1>{this.state.currentUserName}</h1>
+                    <h1>{this.props.currentUser.name}</h1>
                     <button className="ui button" onClick={() => this.onLogoutClick()}>Logout</button>
-                </div>);
+                </div>
+            );
         }
         return (
             <div className="">
@@ -73,4 +56,7 @@ class Header extends React.Component {
     }
 }
 
-export default Header;
+export default connect(
+    (state) => state.authentication,
+    { logout }
+)(Header);

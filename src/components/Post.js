@@ -4,7 +4,7 @@ import React from "react";
 import ReactHtmlParser from 'react-html-parser'
 import "./Post.css"
 import "./PostEditor.css"
-import { get } from "./Http";
+import {get, post} from "./Http";
 import {Link, Redirect} from "react-router-dom";
 import store from "./stores/store"
 
@@ -16,9 +16,11 @@ class Post extends React.Component {
         title: '',
         description: '',
         content: '',
+        comments: [],
         avatarUrl: '',
         currentUserId: 0,
         currentUserName: '',
+        contentToReply: '',
         redirectToLogin: false
     };
 
@@ -28,7 +30,7 @@ class Post extends React.Component {
 
     async componentDidMount(){
         this.updateCurrentUser();
-        this.unsubscribe = store.subscribe(() => this.updateCurrentUser().authentication);
+        this.unsubscribe = store.subscribe(() => this.updateCurrentUser());
 
         const {id} = this.props.match.params;
         const data = await get(`/api/posts/${id}`);
@@ -92,11 +94,17 @@ class Post extends React.Component {
             });
         }
 
+        //get comments
+        const comments = await get(`/api/posts/${id}/comments`);
+        console.log(comments);
+        if(comments.length > 0){
+            this.setState({comments});
+        }
 
     }
 
     updateCurrentUser(){
-        const {currentUser} = store.getState();
+        const {currentUser} = store.getState().authentication;
         if(currentUser) {
             this.setState({
                 currentUserId: currentUser.id,
@@ -116,6 +124,24 @@ class Post extends React.Component {
         });
     }
 
+    async onReplyButtonClick() {
+        const comment = {
+            content: this.state.contentToReply
+        }
+        const {id} = this.props.match.params;
+        const response = await post(`/api/posts/${id}/addNewComment`, comment);
+
+        if(response) {
+            console.log("add comment ok");
+            this.setState({
+                comments: [
+                    ...this.state.comments,
+                    comment
+                ]
+            });
+        }
+    }
+
     render(){
         const elementHTML = ReactHtmlParser(this.state.content);
         let $replyForm = '';
@@ -126,10 +152,12 @@ class Post extends React.Component {
                 <div>
                     <form className="ui reply form">
                         <div className="field">
-                            <textarea></textarea>
+                            <textarea aria-valuetext={this.state.contentToReply}
+                                onChange={(event) => this.setState({contentToReply: event.target.value})}
+                            ></textarea>
                         </div>
                         <div className="ui blue labeled submit icon button">
-                            <i className="icon edit"></i> Add Reply
+                            <button type="button" onClick={() => this.onReplyButtonClick()}>Add Reply</button>
                         </div>
                     </form>
                 </div>);
@@ -142,6 +170,38 @@ class Post extends React.Component {
 
         if(this.state.redirectToLogin) {
             return (<Redirect to={`/user/login`}/>);
+        }
+
+        let $comments = '';
+        if(this.state.comments.length > 0) {
+           $comments = (
+               <div className="post-comments">
+                   <div className="ui threaded comments">
+                       <h3 className="ui dividing header">Comments</h3>
+                       {this.state.comments.map((comment) => (
+                           <div className="comment">
+                               <a className="avatar">
+                                   <img src="https://semantic-ui.com/images/avatar/small/matt.jpg" alt="avatar"/>
+                               </a>
+                               <div className="content" key={comment.id}>
+                                   <a className="author">{comment.user.name}</a>
+                                   <div className="metadata">
+                                       <span className="date">{comment.date}</span>
+                                   </div>
+                                   <div className="text">
+                                       {comment.content}
+                                   </div>
+                                   <div className="actions">
+                                       <button type="button">Reply</button>
+                                   </div>
+                               </div>
+                           </div>
+                       ))}
+                       {$replyForm}
+                       {$loginButton}
+                   </div>
+               </div>
+           );
         }
 
         return (
@@ -194,83 +254,7 @@ class Post extends React.Component {
                     </div>
                     <div className="next">Next Page</div>
                 </div>
-                <div className="post-comments">
-                    <div className="ui threaded comments">
-                        <h3 className="ui dividing header">Comments</h3>
-                        <div className="comment">
-                            <a className="avatar">
-                                <img src="https://semantic-ui.com/images/avatar/small/matt.jpg" alt="avatar"/>
-                            </a>
-                            <div className="content">
-                                <a className="author">Matt</a>
-                                <div className="metadata">
-                                    <span className="date">Today at 5:42PM</span>
-                                </div>
-                                <div className="text">
-                                    How artistic!
-                                </div>
-                                <div className="actions">
-                                    <a className="reply">Reply</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="comment">
-                            <a className="avatar">
-                                <img src="https://semantic-ui.com/images/avatar/small/elliot.jpg" alt="avatar" />
-                            </a>
-                            <div className="content">
-                                <a className="author">Elliot Fu</a>
-                                <div className="metadata">
-                                    <span className="date">Yesterday at 12:30AM</span>
-                                </div>
-                                <div className="text">
-                                    <p>This has been very useful for my research. Thanks as well!</p>
-                                </div>
-                                <div className="actions">
-                                    <a className="reply">Reply</a>
-                                </div>
-                            </div>
-                            <div className="comments">
-                                <div className="comment">
-                                    <a className="avatar">
-                                        <img src="https://semantic-ui.com/images/avatar/small/jenny.jpg" alt="avatar"/>
-                                    </a>
-                                    <div className="content">
-                                        <a className="author">Jenny Hess</a>
-                                        <div className="metadata">
-                                            <span className="date">Just now</span>
-                                        </div>
-                                        <div className="text">
-                                            Elliot you are always so right :)
-                                        </div>
-                                        <div className="actions">
-                                            <a className="reply">Reply</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="comment">
-                            <a className="avatar">
-                                <img src="https://semantic-ui.com/images/avatar/small/joe.jpg" alt="avatar" />
-                            </a>
-                            <div className="content">
-                                <a className="author">Joe Henderson</a>
-                                <div className="metadata">
-                                    <span className="date">5 days ago</span>
-                                </div>
-                                <div className="text">
-                                    Dude, this is awesome. Thanks so much
-                                </div>
-                                <div className="actions">
-                                    <a className="reply">Reply</a>
-                                </div>
-                            </div>
-                        </div>
-                        {$replyForm}
-                        {$loginButton}
-                    </div>
-                </div>
+                {$comments}
             </div>
         );
     }
