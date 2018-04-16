@@ -31,12 +31,12 @@ class Login extends React.Component {
         if(response) {
             console.log("====login result ======");
             console.log(response);
-            if(response.status == 403) {
+            if(response.status === 403) {
                 this.setState({
                     massage: "Login failed",
                     redirectToError403: true
                 });
-            } else if(response.status == 404) {
+            } else if(response.status === 404) {
                 this.setState({
                     massage: "Login failed",
                     redirectToError404: true

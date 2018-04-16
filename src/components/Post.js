@@ -199,7 +199,7 @@ class Post extends React.Component {
                            </div>
                        ))}
                        {$replyForm}
-                       {$loginButton}
+
                    </div>
                </div>
            );
@@ -263,6 +263,7 @@ class Post extends React.Component {
                     <div className="next">Next Page</div>
                 </div>
                 {$comments}
+                {$loginButton}
             </div>
         );
     }
