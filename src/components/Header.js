@@ -1,6 +1,6 @@
 import React from "react"
 import {Link} from "react-router-dom";
-import {get} from "./Http";
+import {get, post} from "./Http";
 import {logout} from "./stores/authenticationReducer";
 import {connect} from "react-redux";
 import store from "./stores/store"
@@ -8,7 +8,7 @@ import store from "./stores/store"
 class Header extends React.Component {
 
     async onLogoutClick() {
-        await fetch("/api/users/logout", {credentials: 'include'});
+        post("/api/users/logout");
         this.props.logout();
     }
 
