@@ -3,11 +3,12 @@ import {Link} from "react-router-dom";
 import {get} from "./Http";
 import {logout} from "./stores/authenticationReducer";
 import {connect} from "react-redux";
+import store from "./stores/store"
 
 class Header extends React.Component {
 
     async onLogoutClick() {
-        await get("/api/users/logout");
+        await fetch("/api/users/logout", {credentials: 'include'});
         this.props.logout();
     }
 

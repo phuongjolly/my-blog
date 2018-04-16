@@ -9,6 +9,7 @@ import {Link, Redirect} from "react-router-dom";
 import store from "./stores/store"
 
 import {ALIGNMENT_DATA_KEY} from "./plugins/ExtendedRichUtils";
+import {connect} from "react-redux";
 
 class Post extends React.Component {
     state = {
@@ -146,7 +147,7 @@ class Post extends React.Component {
         const elementHTML = ReactHtmlParser(this.state.content);
         let $replyForm = '';
         let $loginButton = '';
-        console.log("current user id" + this.state.currentUserId);
+
         if(+this.state.currentUserId > 0) {
             $replyForm = (
                 <div>
@@ -204,8 +205,9 @@ class Post extends React.Component {
            );
         }
 
-        return (
-            <div className="post">
+        let $editButton = '';
+        if(this.props.currentUser) {
+            $editButton = (
                 <div className="post-button">
                     <button className="ui button">
                         <Link to={`/posts/${this.state.id}/edit`}>
@@ -213,6 +215,12 @@ class Post extends React.Component {
                         </Link>
                     </button>
                 </div>
+            );
+        }
+
+        return (
+            <div className="post">
+                {$editButton}
                 <div>
                     <div className="post-title">
                         <h1>
@@ -260,4 +268,6 @@ class Post extends React.Component {
     }
 }
 
-export default Post;
+export default connect(
+    (state) => state.authentication
+) (Post);

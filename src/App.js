@@ -13,8 +13,11 @@ import MyProfile from "./components/MyProfile";
 import store from "./components/stores/store";
 import {login} from "./components/stores/authenticationReducer";
 import {Provider} from "react-redux";
+import NoPermission from "./components/NoPermission";
+import Error404 from "./components/Error404";
 
 class App extends Component {
+
 
     async componentDidMount() {
 
@@ -29,6 +32,7 @@ class App extends Component {
     }
 
     render() {
+
         return (
             <Provider store={store}>
                 <Router>
@@ -43,6 +47,7 @@ class App extends Component {
                                 <Route path="/posts/:id/edit" component={PostEditor}/>
                                 <Route path="/posts/:id" component={Post} />
                                 <Redirect from="/posts/:id" to="/post/:id/edit"/>
+                                <Route path="/Error404" component={Error404}/>
                                 <Route component={PageContent}/>
                             </Switch>
                         </div>

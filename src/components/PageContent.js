@@ -2,6 +2,8 @@ import React from "react"
 import "./PageContent.css"
 import {Link} from "react-router-dom";
 import {get} from "./Http"
+import store from "./stores/store"
+import {connect} from "react-redux";
 
 class PageContent extends React.Component {
     state = {
@@ -13,6 +15,17 @@ class PageContent extends React.Component {
         this.setState({posts});
     }
     render () {
+
+        let $addNewButton = '';
+        if(this.props.currentUser) {
+            $addNewButton = (
+                <div className="addNew">
+                    <Link to={`/posts/add`}>
+                        <i className="plus icon"></i>
+                    </Link>
+                </div>
+            );
+        }
         return (
             <div className="page-container">
                 {this.state.posts.map((post) => (
@@ -28,14 +41,12 @@ class PageContent extends React.Component {
                         </div>
                     </div>
                 ))}
-                <div className="addNew">
-                    <Link to={`/posts/add`}>
-                        <i className="plus icon"></i>
-                    </Link>
-                </div>
+                {$addNewButton}
             </div>
         );
     }
 }
 
-export default PageContent;
+export default connect (
+    (state) => state.authentication
+)(PageContent);

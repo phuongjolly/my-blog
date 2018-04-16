@@ -3,6 +3,7 @@ import {Redirect} from "react-router-dom";
 import {get, post} from "./Http";
 import store from "./stores/store";
 import {login} from "./stores/authenticationReducer";
+import Error403 from "./Error403";
 
 class Login extends React.Component {
     state = {
@@ -10,7 +11,9 @@ class Login extends React.Component {
         password: '',
         message: '',
         redirectToHome: false,
-        redirectToRegister: false
+        redirectToRegister: false,
+        redirectToError403: false,
+        redirectToError404: false
     };
 
     async onLoginClick() {
@@ -26,32 +29,52 @@ class Login extends React.Component {
         const response = await post("/api/users/login", user);
 
         if(response) {
-            this.setState({
-                message: "Login successful",
-                redirectToHome: true
-            });
+            console.log("====login result ======");
+            console.log(response);
+            if(response.status == 403) {
+                this.setState({
+                    massage: "Login failed",
+                    redirectToError403: true
+                });
+            } else if(response.status == 404) {
+                this.setState({
+                    massage: "Login failed",
+                    redirectToError404: true
+                });
+            } else {
+                this.setState({
+                    message: "Login successful",
+                    redirectToHome: true
+                });
+                try {
+                    const currentUser = await get("/api/users/currentUser");
+                    if (currentUser) {
+                        store.dispatch(login(currentUser));
+
+                    } else {
+                        console.log("can not fetch");
+                    }
+                } catch (exception) {
+                    console.log("No logged in user.");
+                }
+            }
         }
 
-        try {
-            const currentUser = await get("/api/users/currentUser");
-            if (currentUser) {
-                store.dispatch(login(currentUser));
-            } else {
-                console.log("can not fetch");
-            }
-        } catch (exception) {
-            console.log("No logged in user.");
-        }
+
     }
 
     render() {
         console.log(this.state.message);
+        let $error403 = '';
+
         if(this.state.redirectToHome) {
             return <Redirect to={`/posts`} />;
-        }
-
-        if(this.state.redirectToRegister) {
+        } else if(this.state.redirectToRegister) {
             return <Redirect to={`/user/register`} />;
+        } else if(this.state.redirectToError403) {
+            $error403 = <Error403/>;
+        } else if(this.state.redirectToError404) {
+            return <Redirect to={`/Error404`}/>;
         }
 
         return (
@@ -74,6 +97,7 @@ class Login extends React.Component {
                     <button className="ui button" type="button" onClick={() => this.onLoginClick()}>Login</button>
                     <button className="ui button" type="button" onClick={() => this.setState({redirectToRegister: true})}>Register</button>
                 </form>
+                {$error403}
             </div>
         );
     }
