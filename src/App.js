@@ -13,7 +13,6 @@ import MyProfile from "./components/MyProfile";
 import store from "./components/stores/store";
 import {login} from "./components/stores/authenticationReducer";
 import {Provider} from "react-redux";
-import NoPermission from "./components/NoPermission";
 import Error404 from "./components/Error404";
 
 class App extends Component {

@@ -1,17 +1,28 @@
 import React from "react"
-import {Link} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
 import {post} from "./Http";
 import {logout} from "./stores/authenticationReducer";
 import {connect} from "react-redux";
 
 class Header extends React.Component {
 
+    state = {
+        redirectToHome: false
+    };
+
     async onLogoutClick() {
         post("/api/users/logout");
         this.props.logout();
+        this.setState({
+            redirectToHome: true
+        });
     }
 
     render() {
+        if(this.state.redirectToHome) {
+            window.location.replace('/posts');
+        }
+
         let $helloMessage;
         if(this.props.currentUser){
             $helloMessage = (

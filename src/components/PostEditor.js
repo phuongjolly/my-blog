@@ -10,7 +10,7 @@ import ExtendedRichUtils, {ALIGNMENT_DATA_KEY} from "./plugins/ExtendedRichUtils
 import MyMediaEditor from "./MyMediaEditor";
 import MyImageUpload from "./MyImageUpload";
 import {Redirect} from "react-router-dom";
-import {get} from "./Http"
+import {get, post} from "./Http"
 
 class PostEditor extends React.Component {
 
@@ -196,7 +196,7 @@ class PostEditor extends React.Component {
     }
 
     async onSaveClick(){
-        const post = {
+        const postObject = {
             id: this.state.id,
             title: this.state.title,
             description: this.state.description,
@@ -207,13 +207,7 @@ class PostEditor extends React.Component {
             previousId: 0
         };
 
-        const response = await fetch("/api/posts", {
-            method: "POST",
-            body: JSON.stringify(post),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        });
+        const response = await post("/api/posts", postObject);
 
         if(response){
             this.setState({
@@ -245,6 +239,7 @@ class PostEditor extends React.Component {
     }
 
     render() {
+
         const {editorState, avatarUrl} = this.state;
         let $avatarPreview = '';
         if(avatarUrl) {
