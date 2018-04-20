@@ -7,7 +7,7 @@ import {connect} from "react-redux";
 class Header extends React.Component {
 
     state = {
-        redirectToHome: false
+        redirectToHome: false,
     };
 
     async onLogoutClick() {
@@ -23,13 +23,25 @@ class Header extends React.Component {
             window.location.replace('/posts');
         }
 
-        let $helloMessage;
+        let helloMessage;
+        let loginButton;
         if(this.props.currentUser){
-            $helloMessage = (
-                <div>
-                    <h2>Hello </h2>
-                    <h1>{this.props.currentUser.name}</h1>
-                    <button className="ui button" onClick={() => this.onLogoutClick()}>Logout</button>
+            helloMessage = (
+                <div className="hello-message">
+                    <div className="hello"> Hello </div>
+                    <div className="username">{this.props.currentUser.name}</div>
+                    <button className="ui button helloButton" onClick={() => this.onLogoutClick()}>Logout</button>
+                </div>
+            );
+        } else {
+            loginButton = (
+                <div className="hello-message">
+                    <Link to={`/user/login`} className="ui link login-button">
+                        Login
+                    </Link>
+                    <Link to={`/user/register`} className="ui link register-button">
+                        Register
+                    </Link>
                 </div>
             );
         }
@@ -41,9 +53,9 @@ class Header extends React.Component {
                             src="https://demokaliumsites-laborator.netdna-ssl.com/freelancer/wp-content/uploads/2015/03/dp.png"
                             alt="logo"/>
                     </div>
-                    <div className="menu-column">
-                        {$helloMessage}
-                    </div>
+
+                    {helloMessage}
+                    {loginButton}
                 </div>
                 <div className="portfolio-container">
                     <div className="portfolio-title-holder">

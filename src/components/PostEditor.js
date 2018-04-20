@@ -158,8 +158,6 @@ class PostEditor extends React.Component {
         }
 
         if(urlType === 'LINK'){
-            console.log("current selection: " + editorState.getSelection());
-
             this.setState({
                 editorState: RichUtils.toggleLink(
                     editorState,

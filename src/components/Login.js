@@ -29,8 +29,6 @@ class Login extends React.Component {
         const response = await post("/api/users/login", user);
 
         if(response) {
-            console.log("====login result ======");
-            console.log(response);
             if(response.status === 403) {
                 this.setState({
                     massage: "Login failed",

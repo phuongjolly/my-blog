@@ -110,6 +110,9 @@
     padding: 15px;
 }
 
+.post .post-comments .ui.comments {
+    max-width: 100%;
+}
 .post .login-button {
     margin-top: 20px;
 }

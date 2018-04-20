@@ -58,8 +58,25 @@ body {
   height: 38px;
 }
 
-.menu-column {
-  float: right;
+.hello-message {
+    display: flex;
+    flex-flow: row;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.hello-message .hello {
+    margin-right: 10px;
+    color: #242321;
+}
+
+.hello-message .username {
+    margin-right: 10px;
+    color: #0d71bb;
+}
+
+.hello-message .login-button {
+    margin-right: 10px;
 }
 
 .portfolio-container {

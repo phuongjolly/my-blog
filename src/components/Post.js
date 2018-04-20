@@ -22,7 +22,8 @@ class Post extends React.Component {
         currentUserId: 0,
         currentUserName: '',
         contentToReply: '',
-        redirectToLogin: false
+        redirectToLogin: false,
+        redirectToRegister: false
     };
 
     async componentWillUnmount() {
@@ -125,6 +126,13 @@ class Post extends React.Component {
         });
     }
 
+    onRegisterButtonClick() {
+        this.setState({
+            redirectToRegister: true
+        });
+    }
+
+
     async onReplyButtonClick() {
         const {currentUser} = store.getState().authentication;
         const comment = {
@@ -148,33 +156,54 @@ class Post extends React.Component {
 
     render(){
         const elementHTML = ReactHtmlParser(this.state.content);
+
+        if(this.state.redirectToLogin) {
+            return (<Redirect to={`/user/login`}/>);
+        }
+
+        if(this.state.redirectToRegister) {
+            return (<Redirect to={`/user/register`}/>);
+        }
+
+        let $editButton = '';
         let $replyForm = '';
         let $loginButton = '';
+        if(this.props.currentUser) {
+            $editButton = (
+                <div className="post-button">
+                    <button className="ui button">
+                        <Link to={`/posts/${this.state.id}/edit`}>
+                            Edit
+                        </Link>
+                    </button>
+                </div>
+            );
 
-        if(+this.state.currentUserId > 0) {
             $replyForm = (
                 <div>
                     <form className="ui reply form">
                         <div className="field">
                             <textarea aria-valuetext={this.state.contentToReply}
-                                onChange={(event) => this.setState({contentToReply: event.target.value})}
+                                      onChange={(event) => this.setState({contentToReply: event.target.value})}
                             ></textarea>
                         </div>
-                        <div className="ui blue labeled submit icon button">
-                            <button type="button" onClick={() => this.onReplyButtonClick()}>Add Reply</button>
-                        </div>
+
+                        <button className="positive ui button" onClick={() => this.onReplyButtonClick()}>Add Reply</button>
+
                     </form>
                 </div>);
         } else {
             $loginButton =
-                <div className="login-button">
-                    <button className="ui button" onClick={() => this.onLoginButtonClick()}> Login to comment </button>
+                <div>
+                    <button className="ui button" onClick={() => this.onLoginButtonClick()}>
+                        Login to comment
+                    </button>
+                    <button className="ui button" onClick={() => this.onRegisterButtonClick()}>
+                        Register
+                    </button>
                 </div>
         }
 
-        if(this.state.redirectToLogin) {
-            return (<Redirect to={`/user/login`}/>);
-        }
 
         let $comments = '';
         if(this.state.comments.length > 0) {
@@ -201,24 +230,9 @@ class Post extends React.Component {
                                </div>
                            </div>
                        ))}
-                       {$replyForm}
-
                    </div>
                </div>
            );
-        }
-
-        let $editButton = '';
-        if(this.props.currentUser) {
-            $editButton = (
-                <div className="post-button">
-                    <button className="ui button">
-                        <Link to={`/posts/${this.state.id}/edit`}>
-                            Edit
-                        </Link>
-                    </button>
-                </div>
-            );
         }
 
         return (
@@ -266,6 +280,7 @@ class Post extends React.Component {
                     <div className="next">Next Page</div>
                 </div>
                 {$comments}
+                {$replyForm}
                 {$loginButton}
             </div>
         );

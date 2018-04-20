@@ -15,7 +15,7 @@ export function post(url, body) {
         method: "POST",
         body: JSON.stringify(body),
         headers: {
-            "Content-Type": "application/json"
+            'Content-Type': 'application/json',
         },
-    })
+    });
 }
