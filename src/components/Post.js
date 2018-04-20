@@ -126,14 +126,17 @@ class Post extends React.Component {
     }
 
     async onReplyButtonClick() {
+        const {currentUser} = store.getState().authentication;
         const comment = {
-            content: this.state.contentToReply
+            content: this.state.contentToReply,
+            user: currentUser,
         }
         const {id} = this.props.match.params;
         const response = await post(`/api/posts/${id}/addNewComment`, comment);
 
         if(response) {
             console.log("add comment ok");
+            console.log(response);
             this.setState({
                 comments: [
                     ...this.state.comments,
