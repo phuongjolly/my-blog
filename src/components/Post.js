@@ -21,7 +21,7 @@ class Post extends React.Component {
         avatarUrl: '',
         currentUserId: 0,
         currentUserName: '',
-        currentUserIsAdmin: false,
+        currentUserIsAdmin: true,
         contentToReply: '',
         redirectToLogin: false,
         redirectToRegister: false
@@ -104,7 +104,7 @@ class Post extends React.Component {
             this.setState({comments});
         }
 
-        const {currentUser} = store.getState().authentication;
+        /*const {currentUser} = store.getState().authentication;
         if(currentUser) {
             const isAdmin = await get("/api/users/isAdmin");
             console.log("check admin ");
@@ -112,7 +112,7 @@ class Post extends React.Component {
             this.setState({
                 currentUserIsAdmin: isAdmin
             });
-        }
+        }*/
     }
 
     updateCurrentUser(){
@@ -144,6 +144,7 @@ class Post extends React.Component {
 
 
     async onReplyButtonClick() {
+        console.log("did you call reply button click");
         const {currentUser} = store.getState().authentication;
         const comment = {
             content: this.state.contentToReply,
@@ -161,6 +162,8 @@ class Post extends React.Component {
                     comment
                 ]
             });
+        } else {
+            console.log("no call add commnet");
         }
     }
 
@@ -175,12 +178,12 @@ class Post extends React.Component {
             return (<Redirect to={`/user/register`}/>);
         }
 
-        let $editButton = '';
-        let $replyForm = '';
-        let $loginButton = '';
+        let editButton = '';
+        let replyForm = '';
+        let loginButton = '';
         if(this.props.currentUser) {
             if(this.state.currentUserIsAdmin) {
-                $editButton = (
+                editButton = (
                     <div className="post-button">
                         <button className="ui button">
                             <Link to={`/posts/${this.state.id}/edit`}>
@@ -191,7 +194,7 @@ class Post extends React.Component {
                 );
             }
 
-            $replyForm = (
+            replyForm = (
                 <div>
                     <form className="ui reply form">
                         <div className="field">
@@ -200,12 +203,12 @@ class Post extends React.Component {
                             ></textarea>
                         </div>
 
-                        <button className="positive ui button" onClick={() => this.onReplyButtonClick()}>Add Reply</button>
+                        <button className="ui button" onClick={() => this.onReplyButtonClick()}>Add Reply</button>
 
                     </form>
                 </div>);
         } else {
-            $loginButton =
+            loginButton =
                 <div>
                     <button className="ui button" onClick={() => this.onLoginButtonClick()}>
                         Login to comment
@@ -217,9 +220,9 @@ class Post extends React.Component {
         }
 
 
-        let $comments = '';
+        let comments = '';
         if(this.state.comments.length > 0) {
-           $comments = (
+           comments = (
                <div className="post-comments">
                    <div className="ui threaded comments">
                        <h3 className="ui dividing header">Comments</h3>
@@ -249,7 +252,7 @@ class Post extends React.Component {
 
         return (
             <div className="post">
-                {$editButton}
+                {editButton}
                 <div>
                     <div className="post-title">
                         <h1>
@@ -291,9 +294,9 @@ class Post extends React.Component {
                     </div>
                     <div className="next">Next Page</div>
                 </div>
-                {$comments}
-                {$replyForm}
-                {$loginButton}
+                {comments}
+                {replyForm}
+                {loginButton}
             </div>
         );
     }
