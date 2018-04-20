@@ -55,7 +55,7 @@ class Register extends React.Component {
                     </div>
                     <div className="field">
                         <label>Password</label>
-                        <input type="text" name="password" placeholder="Password"
+                        <input type="password" name="password" placeholder="Password"
                                onChange={(event) => this.setState({password: event.target.value})}
                                value={this.state.password}/>
                     </div>
