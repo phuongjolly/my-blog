@@ -1,22 +1,33 @@
 import React from "react"
 import "./PageContent.css"
 import {Link} from "react-router-dom";
-import {get} from "./Http"
+import {get, post} from "./Http"
 import {connect} from "react-redux";
 
 class PageContent extends React.Component {
     state = {
-        posts: []
+        posts: [],
+        currentUserIsAdmin: false
     };
 
     async componentDidMount() {
         const posts = await get("/api/posts");
         this.setState({posts});
+
+        const {currentUser} = this.props;
+        if(currentUser) {
+            const isAdmin = await get("/api/users/isAdmin");
+            console.log("check admin ");
+            console.log(isAdmin);
+            this.setState({
+                currentUserIsAdmin: isAdmin
+            });
+        }
     }
     render () {
 
         let $addNewButton = '';
-        if(this.props.currentUser) {
+        if(this.props.currentUser && this.state.currentUserIsAdmin) {
             $addNewButton = (
                 <div className="addNew">
                     <Link to={`/posts/add`}>

@@ -21,6 +21,7 @@ class Post extends React.Component {
         avatarUrl: '',
         currentUserId: 0,
         currentUserName: '',
+        currentUserIsAdmin: false,
         contentToReply: '',
         redirectToLogin: false,
         redirectToRegister: false
@@ -103,6 +104,15 @@ class Post extends React.Component {
             this.setState({comments});
         }
 
+        const {currentUser} = store.getState().authentication;
+        if(currentUser) {
+            const isAdmin = await get("/api/users/isAdmin");
+            console.log("check admin ");
+            console.log(isAdmin);
+            this.setState({
+                currentUserIsAdmin: isAdmin
+            });
+        }
     }
 
     updateCurrentUser(){
@@ -169,15 +179,17 @@ class Post extends React.Component {
         let $replyForm = '';
         let $loginButton = '';
         if(this.props.currentUser) {
-            $editButton = (
-                <div className="post-button">
-                    <button className="ui button">
-                        <Link to={`/posts/${this.state.id}/edit`}>
-                            Edit
-                        </Link>
-                    </button>
-                </div>
-            );
+            if(this.state.currentUserIsAdmin) {
+                $editButton = (
+                    <div className="post-button">
+                        <button className="ui button">
+                            <Link to={`/posts/${this.state.id}/edit`}>
+                                Edit
+                            </Link>
+                        </button>
+                    </div>
+                );
+            }
 
             $replyForm = (
                 <div>
