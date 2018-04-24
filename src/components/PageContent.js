@@ -7,22 +7,23 @@ import {connect} from "react-redux";
 class PageContent extends React.Component {
     state = {
         posts: [],
-        currentUserIsAdmin: false
+        currentUserIsAdmin: false,
     };
 
     async componentDidMount() {
+
         const posts = await get("/api/posts");
         this.setState({posts});
 
         const {currentUser} = this.props;
+        let isAdmin = false;
         if(currentUser) {
-            const isAdmin = await get("/api/users/isAdmin");
-            console.log("check admin ");
-            console.log(isAdmin);
-            this.setState({
-                currentUserIsAdmin: isAdmin
-            });
+            isAdmin = await get("/api/users/isAdmin");
         }
+
+        this.setState({
+            currentUserIsAdmin: isAdmin,
+        });
     }
     render () {
 

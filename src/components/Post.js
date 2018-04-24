@@ -23,12 +23,13 @@ class Post extends React.Component {
         currentUserName: '',
         currentUserIsAdmin: true,
         contentToReply: '',
-        redirectToLogin: false,
-        redirectToRegister: false
     };
 
     async componentWillUnmount() {
         this.unsubscribe();
+        this.props.history.push({
+            state: {currentState: this.props.match.url}
+        });
     }
 
     async componentDidMount(){
@@ -36,6 +37,7 @@ class Post extends React.Component {
         this.unsubscribe = store.subscribe(() => this.updateCurrentUser());
 
         const {id} = this.props.match.params;
+
         const data = await get(`/api/posts/${id}`);
         let options = {
             inlineStyles: {
@@ -103,16 +105,6 @@ class Post extends React.Component {
         if(comments.length > 0){
             this.setState({comments});
         }
-
-        /*const {currentUser} = store.getState().authentication;
-        if(currentUser) {
-            const isAdmin = await get("/api/users/isAdmin");
-            console.log("check admin ");
-            console.log(isAdmin);
-            this.setState({
-                currentUserIsAdmin: isAdmin
-            });
-        }*/
     }
 
     updateCurrentUser(){
@@ -129,19 +121,6 @@ class Post extends React.Component {
             })
         }
     }
-
-    onLoginButtonClick(){
-        this.setState({
-            redirectToLogin: true
-        });
-    }
-
-    onRegisterButtonClick() {
-        this.setState({
-            redirectToRegister: true
-        });
-    }
-
 
     async onReplyButtonClick() {
         console.log("did you call reply button click");
@@ -163,16 +142,12 @@ class Post extends React.Component {
                 ]
             });
         } else {
-            console.log("no call add commnet");
+            console.log("no call add comment");
         }
     }
 
     render(){
         const elementHTML = ReactHtmlParser(this.state.content);
-
-        if(this.state.redirectToLogin) {
-            return (<Redirect to={`/user/login`}/>);
-        }
 
         if(this.state.redirectToRegister) {
             return (<Redirect to={`/user/register`}/>);
@@ -203,19 +178,26 @@ class Post extends React.Component {
                             ></textarea>
                         </div>
 
-                        <button className="ui button" onClick={() => this.onReplyButtonClick()}>Add Reply</button>
+                        <button type="button" className="ui button" onClick={() => this.onReplyButtonClick()}>Add Reply</button>
 
                     </form>
                 </div>);
         } else {
             loginButton =
                 <div>
-                    <button className="ui button" onClick={() => this.onLoginButtonClick()}>
-                        Login to comment
-                    </button>
-                    <button className="ui button" onClick={() => this.onRegisterButtonClick()}>
-                        Register
-                    </button>
+                    <Link to={{
+                        pathname: '/user/login',
+                        state: {currentState: this.props.match.url}
+                        }}>
+                        <div className="ui button">
+                            Login to comment
+                        </div>
+                    </Link>
+                    <Link to={'/user/register'}>
+                        <div className="ui button">
+                            Register
+                        </div>
+                    </Link>
                 </div>
         }
 

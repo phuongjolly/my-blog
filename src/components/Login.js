@@ -10,11 +10,12 @@ class Login extends React.Component {
         email: '',
         password: '',
         message: '',
-        redirectToHome: false,
         redirectToRegister: false,
         redirectToError403: false,
-        redirectToError404: false
+        redirectToError404: false,
+        redirectToPreviousPage: false
     };
+
 
     async onLoginClick() {
         if(!this.state.email || !this.state.password) {
@@ -42,7 +43,7 @@ class Login extends React.Component {
             } else {
                 this.setState({
                     message: "Login successful",
-                    redirectToHome: true
+                    redirectToPreviousPage: true
                 });
                 try {
                     const currentUser = await get("/api/users/currentUser");
@@ -65,14 +66,23 @@ class Login extends React.Component {
         console.log(this.state.message);
         let $error403 = '';
 
-        if(this.state.redirectToHome) {
-            return <Redirect to={`/posts`} />;
+        if(this.state.redirectToPreviousPage) {
+
+            const previousState = this.props.history.location.state.currentState;
+            return <Redirect to={previousState}/>
+
         } else if(this.state.redirectToRegister) {
+
             return <Redirect to={`/user/register`} />;
+
         } else if(this.state.redirectToError403) {
+
             $error403 = <Error403/>;
+
         } else if(this.state.redirectToError404) {
+
             return <Redirect to={`/Error404`}/>;
+
         }
 
         return (

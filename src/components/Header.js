@@ -3,6 +3,7 @@ import {Link, Redirect} from "react-router-dom";
 import {post} from "./Http";
 import {logout} from "./stores/authenticationReducer";
 import {connect} from "react-redux";
+import {withRouter} from "react-router";
 
 class Header extends React.Component {
 
@@ -36,7 +37,10 @@ class Header extends React.Component {
         } else {
             loginButton = (
                 <div className="hello-message">
-                    <Link to={`/user/login`} className="ui link login-button">
+                    <Link to={{
+                        pathname: '/user/login',
+                        state: {currentState: this.props.match.url}
+                    }} className="ui link login-button">
                         Login
                     </Link>
                     <Link to={`/user/register`} className="ui link register-button">
@@ -79,7 +83,7 @@ class Header extends React.Component {
     }
 }
 
-export default connect(
+export default withRouter(connect(
     (state) => state.authentication,
     { logout }
-)(Header);
+)(Header));

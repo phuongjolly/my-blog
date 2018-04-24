@@ -1,5 +1,5 @@
 const initialState = {
-    currentUser: null
+    currentUser: null,
 };
 
 export const LOGIN_ACTION = "login";
@@ -8,7 +8,9 @@ export const LOGOUT_ACTION = "logout";
 export function authenticationReducer(state = initialState, action) {
     switch (action.type) {
         case LOGIN_ACTION: {
-            return {currentUser: action.currentUser};
+            return {
+                currentUser: action.currentUser
+            }
         }
         case LOGOUT_ACTION: {
             return {currentUser: null};

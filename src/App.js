@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import './App.css';
 import PageContent from "./components/PageContent";
 import Post from "./components/Post";
-import {Route, BrowserRouter as Router, Redirect} from "react-router-dom";
+import {Route, Router, Redirect} from "react-router-dom";
 import {Switch} from "react-router";
+import createBrowserHistory from 'history/createBrowserHistory';
 import Header from "./components/Header";
 import PostEditor from "./components/PostEditor";
 import Login from "./components/Login";
@@ -15,8 +16,9 @@ import {login} from "./components/stores/authenticationReducer";
 import {Provider} from "react-redux";
 import Error404 from "./components/Error404";
 
-class App extends Component {
+const customHistory = createBrowserHistory();
 
+class App extends Component {
 
     async componentDidMount() {
 
@@ -34,7 +36,7 @@ class App extends Component {
 
         return (
             <Provider store={store}>
-                <Router>
+                <Router history={customHistory}>
                     <div className="App">
                         <div className="wrapper">
                             <Header />
