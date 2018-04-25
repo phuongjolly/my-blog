@@ -107,6 +107,7 @@ class Post extends React.Component {
 
     async updateCurrentUser(){
         const {currentUser} = store.getState().authentication;
+
         if(currentUser) {
 
             const isAdmin = await get("/api/users/isAdmin");
@@ -133,8 +134,7 @@ class Post extends React.Component {
         const response = await post(`/api/posts/${id}/addNewComment`, comment);
 
         if(response) {
-            console.log("add comment ok");
-            console.log(response);
+
             this.setState({
                 comments: [
                     ...this.state.comments,

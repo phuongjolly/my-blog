@@ -14,7 +14,7 @@ class PageContent extends React.Component {
         const posts = await get("/api/posts");
         this.setState({posts});
 
-        const {currentUser} = this.props;
+        const currentUser = await get("/api/users/currentUser");
         let isAdmin = false;
         if(currentUser) {
             isAdmin = await get("/api/users/isAdmin");
@@ -26,9 +26,9 @@ class PageContent extends React.Component {
     }
     render () {
 
-        let $addNewButton = '';
+        let addNewButton = '';
         if(this.props.currentUser && this.state.currentUserIsAdmin) {
-            $addNewButton = (
+            addNewButton = (
                 <div className="addNew">
                     <Link to={`/posts/add`}>
                         <i className="plus icon"></i>
@@ -51,7 +51,7 @@ class PageContent extends React.Component {
                         </div>
                     </div>
                 ))}
-                {$addNewButton}
+                {addNewButton}
             </div>
         );
     }
