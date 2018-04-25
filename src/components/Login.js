@@ -67,9 +67,13 @@ class Login extends React.Component {
         let $error403 = '';
 
         if(this.state.redirectToPreviousPage) {
+            if(this.props.history.location.state){
+                const previousState = this.props.history.location.state.currentState;
+                return <Redirect to={previousState}/>
+            } else {
+                return <Redirect to={'/posts'}/>
+            }
 
-            const previousState = this.props.history.location.state.currentState;
-            return <Redirect to={previousState}/>
 
         } else if(this.state.redirectToRegister) {
 
