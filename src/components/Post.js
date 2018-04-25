@@ -21,15 +21,13 @@ class Post extends React.Component {
         avatarUrl: '',
         currentUserId: 0,
         currentUserName: '',
-        currentUserIsAdmin: true,
+        currentUserIsAdmin: false,
         contentToReply: '',
+        gotoPageId: '',
     };
 
     async componentWillUnmount() {
         this.unsubscribe();
-        this.props.history.push({
-            state: {currentState: this.props.match.url}
-        });
     }
 
     async componentDidMount(){
@@ -107,12 +105,15 @@ class Post extends React.Component {
         }
     }
 
-    updateCurrentUser(){
+    async updateCurrentUser(){
         const {currentUser} = store.getState().authentication;
         if(currentUser) {
+
+            const isAdmin = await get("/api/users/isAdmin");
             this.setState({
                 currentUserId: currentUser.id,
-                currentUserName: currentUser.name
+                currentUserName: currentUser.name,
+                currentUserIsAdmin: isAdmin
             });
         } else {
             this.setState({
@@ -123,7 +124,6 @@ class Post extends React.Component {
     }
 
     async onReplyButtonClick() {
-        console.log("did you call reply button click");
         const {currentUser} = store.getState().authentication;
         const comment = {
             content: this.state.contentToReply,
@@ -146,11 +146,37 @@ class Post extends React.Component {
         }
     }
 
+    gotoPreviousPage() {
+        const previousId = parseInt(this.props.match.params.id) - 1;
+        if(previousId > 2){
+            this.switchPage(previousId);
+        }
+
+    }
+
+    gotoNextPage() {
+        const nextPageId = parseInt(this.props.match.params.id) + 1;
+        if(nextPageId < 5) {
+            this.switchPage(nextPageId);
+        }
+
+    }
+
+    switchPage(pageId) {
+        this.setState({
+            gotoPageId: pageId
+        });
+    }
+
     render(){
         const elementHTML = ReactHtmlParser(this.state.content);
 
         if(this.state.redirectToRegister) {
             return (<Redirect to={`/user/register`}/>);
+        }
+
+        if(+this.state.gotoPageId != 0) {
+            return <Redirect to={`/posts/${this.state.gotoPageId}`}/>
         }
 
         let editButton = '';
@@ -270,11 +296,19 @@ class Post extends React.Component {
                     </div>
                 </div>
                 <div className="navigation">
-                    <div className="previous">Previous Page</div>
+                    <div className="previous">
+                        <a onClick={() => this.gotoPreviousPage()}>
+                            Previous Page
+                        </a>
+                    </div>
                     <div>
                         <i className="th large icon"></i>
                     </div>
-                    <div className="next">Next Page</div>
+                    <div className="next">
+                        <a onClick={() => this.gotoNextPage()}>
+                        Next Page
+                        </a>
+                    </div>
                 </div>
                 {comments}
                 {replyForm}

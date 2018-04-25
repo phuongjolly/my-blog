@@ -11,7 +11,6 @@ class PageContent extends React.Component {
     };
 
     async componentDidMount() {
-
         const posts = await get("/api/posts");
         this.setState({posts});
 

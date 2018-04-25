@@ -309,11 +309,18 @@ class PostEditor extends React.Component {
                             <i className="image icon" />
                         </button>
                         <button className="ui button" onClick={() => this.setBlockStyling('header-two')}>
-                            H1
+                            H2
+                        </button>
+                        <button className="ui button" onClick={() => this.setBlockStyling('header-three')}>
+                            H3
+                        </button>
+                        <button className="ui button" onClick={() => this.setBlockStyling('header-four')}>
+                            H4
                         </button>
                         <button className="ui button" onClick={() => this.setBlockStyling('header-five')}>
                             H5
                         </button>
+
                     </div>
                     <div className="editor-content">
                         {
