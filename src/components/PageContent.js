@@ -12,17 +12,22 @@ class PageContent extends React.Component {
 
     async componentDidMount() {
         const posts = await get("/api/posts");
+        console.log(posts);
         this.setState({posts});
 
         const currentUser = await get("/api/users/currentUser");
-        let isAdmin = false;
         if(currentUser) {
-            isAdmin = await get("/api/users/isAdmin");
+            let isAdmin = false;
+            if(currentUser) {
+                isAdmin = await get("/api/users/isAdmin");
+            }
+            this.setState({
+                currentUserIsAdmin: isAdmin,
+            });
         }
 
-        this.setState({
-            currentUserIsAdmin: isAdmin,
-        });
+
+
     }
     render () {
 
@@ -39,17 +44,19 @@ class PageContent extends React.Component {
         return (
             <div className="page-container">
                 {this.state.posts.map((post) => (
-                    <div className="item-box" key={post.id}>
-                        <div className="photo">
-                            <Link to={`/posts/${post.id}`}>
-                                <img src={post.avatarUrl} alt="myBlog"/>
-                            </Link>
+                    post.display && (
+                        <div className="item-box" key={post.id}>
+                            <div className="photo">
+                                <Link to={`/posts/${post.id}`}>
+                                    <img src={post.avatarUrl} alt="myBlog"/>
+                                </Link>
+                            </div>
+                            <div className="info-header">{post.title}</div>
+                            <div className="info-detail">
+                                {post.description}
+                            </div>
                         </div>
-                        <div className="info-header">{post.title}</div>
-                        <div className="info-detail">
-                            {post.description}
-                        </div>
-                    </div>
+                    )
                 ))}
                 {addNewButton}
             </div>
