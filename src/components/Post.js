@@ -296,10 +296,8 @@ class Post extends React.Component {
                     </div>
                 </div>
                 <div className="navigation">
-                    <div className="previous">
-                        <a onClick={() => this.gotoPreviousPage()}>
+                    <div className="previous" onClick={() => this.gotoPreviousPage()}>
                             Previous Page
-                        </a>
                     </div>
                     <div>
                         <i className="th large icon"></i>

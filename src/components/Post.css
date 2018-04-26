@@ -93,16 +93,18 @@
     font-family: 'Questrial';
     font-weight: 400;
     font-size: 20px;
-    margin-top: 60px;
+    margin: 60px 0 10px 0;
     padding: 0 15px 0 15px;
 }
 
 .post .navigation .previous {
     color: #898989;
+    cursor: pointer;
 }
 
 .post .navigation .next {
     color: #242321;
+    cursor: pointer;
 }
 
 .post .post-comments {

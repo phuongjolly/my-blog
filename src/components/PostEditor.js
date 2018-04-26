@@ -31,7 +31,8 @@ class PostEditor extends React.Component {
         urlType: '',
         message: undefined,
         redirectToPost: false,
-        previousId: 0
+        previousId: 0,
+        tag: ''
     };
 
     onChange = (editorState) => {
@@ -236,6 +237,10 @@ class PostEditor extends React.Component {
         });
     }
 
+    async addNewTag(){
+
+    }
+
     render() {
 
         const {editorState, avatarUrl} = this.state;
@@ -345,6 +350,15 @@ class PostEditor extends React.Component {
                     <button className="ui button" onClick={() => this.onDiscardClick()}>Discard</button>
                     <div className="or"></div>
                     <button className="ui positive button" onClick={() => this.onSaveClick()}>Save</button>
+                </div>
+                <div className="tags">
+                    <div className="ui input">
+                        <input type="text" placeholder="Add new tag"
+                               value={this.state.tag}
+                               onChange={(event) => this.setState({tag: event.target.value})}
+                        />
+                    </div>
+                    <div className="ui button" onClick={() => this.addNewTag()}>Add Tag</div>
                 </div>
             </div>
         );

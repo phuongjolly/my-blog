@@ -3,7 +3,14 @@ export async function request(url, options = {}) {
         ...options,
         credentials: 'include'
     });
-    return await response.json();
+    try {
+        const value = await response.json();
+        return value;
+    }
+    catch (e) {
+        return null;
+    }
+
 }
 
 export function get(url) {
