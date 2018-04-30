@@ -1,7 +1,7 @@
 import React from "react"
 import "./PageContent.css"
 import {Link} from "react-router-dom";
-import {get, post} from "./Http"
+import {get} from "./Http"
 import {connect} from "react-redux";
 
 class PageContent extends React.Component {

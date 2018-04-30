@@ -32,7 +32,8 @@ class PostEditor extends React.Component {
         message: undefined,
         redirectToPost: false,
         previousId: 0,
-        tag: ''
+        newTag: '',
+        tags: []
     };
 
     onChange = (editorState) => {
@@ -49,7 +50,8 @@ class PostEditor extends React.Component {
         const {id} = this.props.match.params;
         if(id > 0) {
             const data = await get(`/api/posts/${id}`);
-
+            console.log("data");
+            console.log(data);
             if(data){
                 this.setState({
                     id: data.id,
@@ -76,6 +78,8 @@ class PostEditor extends React.Component {
                 previousId: 0
             });
         }
+
+        this.getTags(this.state.id);
     }
 
     handleKeyCommand = (command, editorState) => {
@@ -209,6 +213,12 @@ class PostEditor extends React.Component {
         const response = await post("/api/posts", postObject);
 
         if(response){
+            console.log("add tag");
+            console.log(response);
+            console.log(this.state.newTag);
+            const tag = this.state.newTag;
+            await post(`/api/posts/${this.state.id}/addNewTag`, tag);
+
             this.setState({
                 message: "Post editor !",
                 redirectToPost: true,
@@ -237,8 +247,19 @@ class PostEditor extends React.Component {
         });
     }
 
-    async addNewTag(){
+    async getTags(id) {
+        const tags = await get(`/api/posts/${id}/tags`);
+        if(tags) {
+            console.log("tags: ");
+            console.log(tags);
+            this.setState({tags});
+        }
+    }
 
+    setNewTag(value){
+        console.log("new new");
+        console.log(value);
+        this.setState({newTag: value});
     }
 
     render() {
@@ -346,20 +367,24 @@ class PostEditor extends React.Component {
                         </div>
                     </div>
                 </div>
+                <div className="tags">
+                    <div>Tags: </div>
+                    {this.state.tags.map((tag) => (
+                        <div key={tag.id}>{tag.name}</div>
+                    ))}
+                    <div className="ui input">
+                        <input type="text" placeholder="Title"
+                               onChange={(event) => this.setNewTag(event.target.value)}
+                               value={this.state.newTag}
+                        />
+                    </div>
+                </div>
                 <div className="ui buttons">
                     <button className="ui button" onClick={() => this.onDiscardClick()}>Discard</button>
                     <div className="or"></div>
                     <button className="ui positive button" onClick={() => this.onSaveClick()}>Save</button>
                 </div>
-                <div className="tags">
-                    <div className="ui input">
-                        <input type="text" placeholder="Add new tag"
-                               value={this.state.tag}
-                               onChange={(event) => this.setState({tag: event.target.value})}
-                        />
-                    </div>
-                    <div className="ui button" onClick={() => this.addNewTag()}>Add Tag</div>
-                </div>
+
             </div>
         );
     }
