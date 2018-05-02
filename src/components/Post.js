@@ -24,6 +24,7 @@ class Post extends React.Component {
         currentUserIsAdmin: false,
         contentToReply: '',
         gotoPageId: '',
+        tags: []
     };
 
     async componentWillUnmount() {
@@ -95,6 +96,11 @@ class Post extends React.Component {
                 avatarUrl: '',
                 content: ''
             });
+        }
+
+        const tags = await get(`/api/posts/${id}/tags`);
+        if(tags) {
+            this.setState({tags});
         }
 
         //get comments
@@ -278,6 +284,13 @@ class Post extends React.Component {
                                 {elementHTML}
                             </div>
                         </div>
+                    </div>
+                    <div>
+                        {this.state.tags.map((tag) => (
+                            <div key={tag.id}>
+                                <div>#{tag.name}</div>
+                            </div>
+                        ))}
                     </div>
                 </div>
                 <div className="social-button">

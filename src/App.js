@@ -15,6 +15,8 @@ import store from "./components/stores/store";
 import {login} from "./components/stores/authenticationReducer";
 import {Provider} from "react-redux";
 import Error404 from "./components/Error404";
+import UserList from "./components/UserList";
+import UserRole from "./components/UserRole";
 
 const customHistory = createBrowserHistory();
 
@@ -42,6 +44,8 @@ class App extends Component {
                             <Header />
                             <Switch>
                                 <Route path="/user/me" component={MyProfile}/>
+                                <Route path="/user/userList" component={UserList}/>
+                                <Route path="/addRole" component={UserRole}/>
                                 <Route path="/user/register" component={Register}/>
                                 <Route path="/user/login" component={Login}/>
                                 <Route path="/posts/add" component={PostEditor}/>

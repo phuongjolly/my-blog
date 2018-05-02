@@ -198,7 +198,9 @@ class PostEditor extends React.Component {
         return null;
     }
 
-    async onSaveClick(){
+    async onSaveClick() {
+        const tag = {name: this.state.newTag};
+
         const postObject = {
             id: this.state.id,
             title: this.state.title,
@@ -207,21 +209,19 @@ class PostEditor extends React.Component {
             content: JSON.stringify(convertToRaw(this.state.editorState.getCurrentContent())),
             likeCount: 0,
             commentCount: 0,
-            previousId: 0
+            previousId: 0,
+            tags: [...this.state.tags, tag]
         };
+
+        console.log(postObject);
 
         const response = await post("/api/posts", postObject);
 
         if(response){
-            console.log("add tag");
-            console.log(response);
-            console.log(this.state.newTag);
-            const tag = this.state.newTag;
-            await post(`/api/posts/${this.state.id}/addNewTag`, tag);
 
             this.setState({
                 message: "Post editor !",
-                redirectToPost: true,
+                redirectToPost: true
             });
         }
 
@@ -250,15 +250,11 @@ class PostEditor extends React.Component {
     async getTags(id) {
         const tags = await get(`/api/posts/${id}/tags`);
         if(tags) {
-            console.log("tags: ");
-            console.log(tags);
             this.setState({tags});
         }
     }
 
     setNewTag(value){
-        console.log("new new");
-        console.log(value);
         this.setState({newTag: value});
     }
 
