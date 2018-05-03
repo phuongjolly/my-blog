@@ -18,6 +18,7 @@ export function get(url) {
 }
 
 export function post(url, body) {
+    console.log("Using POST method");
     return request(url, {
         method: "POST",
         body: JSON.stringify(body),

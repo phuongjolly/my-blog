@@ -10,8 +10,23 @@ class UserRole extends React.Component {
             {name: 'ADMIN'},
             {name: 'USER'}
         ];
-        await post("/api/users/addRole", roles[0]);
-        const roleList = await post("/api/users/addRole", roles[1]);
+        const data = await fetch("/api/users/addRole", {
+            method: "POST",
+            body: JSON.stringify(roles[0]),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include'
+        });
+        const data2 = await fetch("/api/users/addRole", {
+            method: "POST",
+            body: JSON.stringify(roles[1]),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include'
+        });
+        const roleList = await data2.json();
         if(roleList) {
             this.setState({
                 roles: roleList

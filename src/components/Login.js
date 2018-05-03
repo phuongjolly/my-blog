@@ -4,6 +4,7 @@ import {get, post} from "./Http";
 import store from "./stores/store";
 import {login} from "./stores/authenticationReducer";
 import Error403 from "./Error403";
+import {RingLoader} from "react-spinners"
 
 class Login extends React.Component {
     state = {
@@ -13,7 +14,8 @@ class Login extends React.Component {
         redirectToRegister: false,
         redirectToError403: false,
         redirectToError404: false,
-        redirectToPreviousPage: false
+        redirectToPreviousPage: false,
+        loading: false
     };
 
 
@@ -26,6 +28,10 @@ class Login extends React.Component {
             email: this.state.email,
             password: this.state.password
         };
+
+        this.setState({
+            loading: true
+        });
 
         const response = await post("/api/users/login", user);
 
@@ -43,7 +49,8 @@ class Login extends React.Component {
             } else {
                 this.setState({
                     message: "Login successful",
-                    redirectToPreviousPage: true
+                    redirectToPreviousPage: true,
+                    loading: false
                 });
                 try {
                     const currentUser = await get("/api/users/currentUser");
@@ -90,6 +97,7 @@ class Login extends React.Component {
 
         return (
             <div>
+                <RingLoader color={'#456'} loading={this.state.loading}/>
                 <form className="ui form">
                     <div className="field">
                         <label>Email </label>

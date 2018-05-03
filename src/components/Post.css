@@ -118,3 +118,13 @@
 .post .login-button {
     margin-top: 20px;
 }
+
+.post .tag {
+    display: flex;
+    flex-flow: row;
+}
+
+.post .tag .item {
+    margin-right: 3px;
+    color: red;
+}

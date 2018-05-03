@@ -285,10 +285,10 @@ class Post extends React.Component {
                             </div>
                         </div>
                     </div>
-                    <div>
+                    <div className="tag">
                         {this.state.tags.map((tag) => (
                             <div key={tag.id}>
-                                <div>#{tag.name}</div>
+                                <div className="item">#{tag.name}</div>
                             </div>
                         ))}
                     </div>

@@ -17,6 +17,7 @@ import {Provider} from "react-redux";
 import Error404 from "./components/Error404";
 import UserList from "./components/UserList";
 import UserRole from "./components/UserRole";
+import Loading from "./components/Loading";
 
 const customHistory = createBrowserHistory();
 
@@ -43,6 +44,7 @@ class App extends Component {
                         <div className="wrapper">
                             <Header />
                             <Switch>
+                                <Route path="/loading" component={Loading}/>
                                 <Route path="/user/me" component={MyProfile}/>
                                 <Route path="/user/userList" component={UserList}/>
                                 <Route path="/addRole" component={UserRole}/>
