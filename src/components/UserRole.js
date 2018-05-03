@@ -3,30 +3,22 @@ import {post} from "./Http";
 
 class UserRole extends React.Component {
     state = {
-        roles: []
+        roles: [],
+        roleName: '',
+        displayButton: true
     }
-    async componentDidMount() {
-        const roles = [
-            {name: 'ADMIN'},
-            {name: 'USER'}
-        ];
+
+    async setRole() {
+        const role = {name: this.state.roleName};
         const data = await fetch("/api/users/addRole", {
             method: "POST",
-            body: JSON.stringify(roles[0]),
+            body: JSON.stringify(role),
             headers: {
                 'Content-Type': 'application/json',
-            },
-            credentials: 'include'
+            }
         });
-        const data2 = await fetch("/api/users/addRole", {
-            method: "POST",
-            body: JSON.stringify(roles[1]),
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            credentials: 'include'
-        });
-        const roleList = await data2.json();
+
+        const roleList = await data.json();
         if(roleList) {
             this.setState({
                 roles: roleList
@@ -34,15 +26,40 @@ class UserRole extends React.Component {
         }
     }
 
+    async onChangeButton(value) {
+        this.setState({roleName: value});
+    }
+
+
     render() {
-        return (
-            <div>
+        let roleList;
+        if(!this.state.displayButton) {
+            roleList =
+                (<div>
                 {this.state.roles.map((role) => (
                     <div key={role.id}>
                         <div>Name: </div>
                         <div>{role.name}</div>
                     </div>
                 ))}
+                </div>);
+        }
+        return (
+            <div>
+
+                <input type="text" onChange={(event) => this.onChangeButton(event.target.value)}
+                    value={this.state.roleName}
+                />
+                <button type="button" onClick={() => this.setRole()}>Set Role</button>
+
+                <div>
+                    {this.state.roles.map((role) => (
+                        <div key={role.id}>
+                            <div>Name: </div>
+                            <div>{role.name}</div>
+                        </div>
+                    ))}
+                </div>
             </div>
         );
     }
