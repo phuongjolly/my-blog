@@ -18,6 +18,7 @@ import Error404 from "./components/Error404";
 import UserList from "./components/UserList";
 import UserRole from "./components/UserRole";
 import Loading from "./components/Loading";
+import Tags from "./components/Tags";
 
 const customHistory = createBrowserHistory();
 
@@ -50,6 +51,7 @@ class App extends Component {
                                 <Route path="/addRole" component={UserRole}/>
                                 <Route path="/user/register" component={Register}/>
                                 <Route path="/user/login" component={Login}/>
+                                <Route path="/posts/tags/:name" component={Tags}/>
                                 <Route path="/posts/add" component={PostEditor}/>
                                 <Route path="/posts/:id/edit" component={PostEditor}/>
                                 <Route path="/posts/:id" component={Post} />

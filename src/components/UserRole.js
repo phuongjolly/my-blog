@@ -1,5 +1,4 @@
 import React from "react";
-import {post} from "./Http";
 
 class UserRole extends React.Component {
     state = {

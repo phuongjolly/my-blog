@@ -80,7 +80,8 @@ class Post extends React.Component {
             defaultBlockTag: 'div'
         };
         const content = stateToHTML(convertFromRaw(JSON.parse(data.content)), options);
-
+        console.log("check data");
+        console.log(data);
         if(data){
             this.setState({
                 id: data.id,
@@ -88,19 +89,16 @@ class Post extends React.Component {
                 description: data.description,
                 avatarUrl: data.avatarUrl,
                 content: content,
+                tags: data.tags
             });
         } else {
             this.setState({
                 title: '',
                 description: '',
                 avatarUrl: '',
-                content: ''
+                content: '',
+                tags: []
             });
-        }
-
-        const tags = await get(`/api/posts/${id}/tags`);
-        if(tags) {
-            this.setState({tags});
         }
 
         //get comments
@@ -288,7 +286,9 @@ class Post extends React.Component {
                     <div className="tag">
                         {this.state.tags.map((tag) => (
                             <div key={tag.id}>
-                                <div className="item">#{tag.name}</div>
+                                <Link to={`/posts/tags/:${tag.name}`}>
+                                    <div className="item">#{tag.name}</div>
+                                </Link>
                             </div>
                         ))}
                     </div>

@@ -51,7 +51,6 @@ class PostEditor extends React.Component {
         if(id > 0) {
             const data = await get(`/api/posts/${id}`);
             console.log("data");
-            console.log(data);
             if(data){
                 this.setState({
                     id: data.id,
@@ -61,7 +60,8 @@ class PostEditor extends React.Component {
                     editorState: EditorState.createWithContent(convertFromRaw(JSON.parse(data.content)), this.decorator),
                     isSelectingMedia: false,
                     urlType: '',
-                    previousId: data.id
+                    previousId: data.id,
+                    tags: data.tags
                 });
             }
         } else {
@@ -75,11 +75,10 @@ class PostEditor extends React.Component {
                 editorState: EditorState.createEmpty(this.decorator),
                 isSelectingMedia: false,
                 urlType: '',
-                previousId: 0
+                previousId: 0,
+                tags: []
             });
         }
-
-        this.getTags(this.state.id);
     }
 
     handleKeyCommand = (command, editorState) => {
@@ -199,19 +198,39 @@ class PostEditor extends React.Component {
     }
 
     async onSaveClick() {
-        const tag = {name: this.state.newTag};
+        let postObject = '';
+        let tagsName = [];
+        this.state.tags.map((tag) => (
+            tagsName.push(tag.name)
+        ));
 
-        const postObject = {
-            id: this.state.id,
-            title: this.state.title,
-            description: this.state.description,
-            avatarUrl: this.state.avatarUrl,
-            content: JSON.stringify(convertToRaw(this.state.editorState.getCurrentContent())),
-            likeCount: 0,
-            commentCount: 0,
-            previousId: 0,
-            tags: [...this.state.tags, tag]
-        };
+        if(this.state.newTag !== '' && (!tagsName.includes(this.state.newTag) || this.state.tags.length <= 0)) {
+
+            const tag = {name: this.state.newTag};
+            postObject = {
+                id: this.state.id,
+                title: this.state.title,
+                description: this.state.description,
+                avatarUrl: this.state.avatarUrl,
+                content: JSON.stringify(convertToRaw(this.state.editorState.getCurrentContent())),
+                likeCount: 0,
+                commentCount: 0,
+                previousId: 0,
+                tags: [...this.state.tags, tag]
+            };
+        } else {
+            postObject = {
+                id: this.state.id,
+                title: this.state.title,
+                description: this.state.description,
+                avatarUrl: this.state.avatarUrl,
+                content: JSON.stringify(convertToRaw(this.state.editorState.getCurrentContent())),
+                likeCount: 0,
+                commentCount: 0,
+                previousId: 0,
+                tags: this.state.tags
+            };
+        }
 
         console.log(postObject);
 
@@ -245,13 +264,6 @@ class PostEditor extends React.Component {
         this.setState({
             avatarUrl: url
         });
-    }
-
-    async getTags(id) {
-        const tags = await get(`/api/posts/${id}/tags`);
-        if(tags) {
-            this.setState({tags});
-        }
     }
 
     setNewTag(value){
