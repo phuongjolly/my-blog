@@ -97,8 +97,8 @@ class Login extends React.Component {
         }
 
         return (
+
             <div className="authForm">
-                <RingLoader color={'#456'} loading={this.state.loading}/>
                 <form className="ui form">
                     <div className="field">
                         <label>Email </label>
@@ -115,7 +115,7 @@ class Login extends React.Component {
                         />
                     </div>
                     <div className="formButton">
-                        <button className="ui button" type="button" onClick={() => this.onLoginClick()}>Login</button>
+                        <button className={this.state.loading ? "ui loading button" : "ui button"} type="button" onClick={() => this.onLoginClick()}>Login</button>
                         <button className="ui button" type="button" onClick={() => this.setState({redirectToRegister: true})}>Register</button>
                     </div>
                 </form>

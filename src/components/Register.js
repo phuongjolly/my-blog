@@ -9,7 +9,8 @@ class Register extends React.Component {
         password: '',
         role: '',
         message: '',
-        redirectToHome: false
+        redirectToHome: false,
+        loading: false
 
     };
 
@@ -20,12 +21,15 @@ class Register extends React.Component {
             password: this.state.password,
         };
 
+        this.setState({loading: true});
+
         const response = await post("/api/users/register", user);
 
         if(response){
             this.setState({
                 message: "Register successful",
-                redirectToLogin: true
+                redirectToLogin: true,
+                loading: false
             })
         }
     }
@@ -60,7 +64,7 @@ class Register extends React.Component {
                                value={this.state.password}/>
                     </div>
                     <div className="formButton">
-                        <button className="ui button" type="button" onClick={() => this.onRegisterClick()}>Register</button>
+                        <button className={this.state.loading ? "ui loading button" : "ui button"} type="button" onClick={() => this.onRegisterClick()}>Register</button>
                     </div>
                 </form>
             </div>
