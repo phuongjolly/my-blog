@@ -39,7 +39,7 @@ class Register extends React.Component {
         }
         return (
 
-            <div>
+            <div className="authForm">
                 <form className="ui form">
                     <div className="field">
                         <label>First Name</label>
@@ -59,7 +59,9 @@ class Register extends React.Component {
                                onChange={(event) => this.setState({password: event.target.value})}
                                value={this.state.password}/>
                     </div>
-                    <button className="ui button" type="button" onClick={() => this.onRegisterClick()}>Register</button>
+                    <div className="formButton">
+                        <button className="ui button" type="button" onClick={() => this.onRegisterClick()}>Register</button>
+                    </div>
                 </form>
             </div>
         );

@@ -5,6 +5,7 @@ import store from "./stores/store";
 import {login} from "./stores/authenticationReducer";
 import Error403 from "./Error403";
 import {RingLoader} from "react-spinners"
+import "./Authentication.css"
 
 class Login extends React.Component {
     state = {
@@ -96,7 +97,7 @@ class Login extends React.Component {
         }
 
         return (
-            <div>
+            <div className="authForm">
                 <RingLoader color={'#456'} loading={this.state.loading}/>
                 <form className="ui form">
                     <div className="field">
@@ -113,8 +114,10 @@ class Login extends React.Component {
                             value={this.state.password}
                         />
                     </div>
-                    <button className="ui button" type="button" onClick={() => this.onLoginClick()}>Login</button>
-                    <button className="ui button" type="button" onClick={() => this.setState({redirectToRegister: true})}>Register</button>
+                    <div className="formButton">
+                        <button className="ui button" type="button" onClick={() => this.onLoginClick()}>Login</button>
+                        <button className="ui button" type="button" onClick={() => this.setState({redirectToRegister: true})}>Register</button>
+                    </div>
                 </form>
                 {$error403}
             </div>
