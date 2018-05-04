@@ -13,18 +13,21 @@
     color: #242321;
     font-family: 'Montserrat';
     text-align: center;
+    font-weight: 300;
 }
 
 .post-description p {
     color: #666;
     font-size: 16px;
     line-height: 26px;
+    font-weight: 400;
     text-align: center;
 }
 
 .post .post-content{
+    color: #666;
     padding: 15px;
-    font-size: 15px;
+    font-size: 16px;
     font-family: 'Questrial';
     font-weight: 400;
 }

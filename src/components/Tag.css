@@ -1,0 +1,15 @@
+.tag {
+    text-align: left;
+    margin-left: 100px;
+}
+
+.tag .title {
+    font-size: 18px;
+}
+
+.tag .item {
+    color: #e09a0e;
+    cursor: pointer;
+    text-decoration: underline;
+    font-size: 18px;
+}

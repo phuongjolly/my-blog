@@ -203,7 +203,8 @@ class PostEditor extends React.Component {
         this.state.tags.map((tag) => (
             tagsName.push(tag.name)
         ));
-
+        console.log("=====");
+        console.log(tagsName);
         if(this.state.newTag !== '' && (!tagsName.includes(this.state.newTag) || this.state.tags.length <= 0)) {
 
             const tag = {name: this.state.newTag};

@@ -286,7 +286,7 @@ class Post extends React.Component {
                     <div className="tag">
                         {this.state.tags.map((tag) => (
                             <div key={tag.id}>
-                                <Link to={`/posts/tags/:${tag.name}`}>
+                                <Link to={`/posts/tags/${tag.name}`}>
                                     <div className="item">#{tag.name}</div>
                                 </Link>
                             </div>
