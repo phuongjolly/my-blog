@@ -34,10 +34,12 @@ class PageContent extends React.Component {
         let addNewButton = '';
         if(this.props.currentUser && this.state.currentUserIsAdmin) {
             addNewButton = (
-                <div className="addNew">
-                    <Link to={`/posts/add`}>
-                        <i className="plus icon"></i>
-                    </Link>
+                <div className="item-box">
+                    <div className="addNew">
+                        <Link to={`/posts/add`}>
+                            <i className="plus icon"></i>
+                        </Link>
+                    </div>
                 </div>
             );
         }
