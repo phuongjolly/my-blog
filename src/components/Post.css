@@ -1,9 +1,49 @@
 .post{
-    padding: 50px;
+
     display: flex;
     flex-flow: column;
     margin: 0 50px 0 50px;
 }
+
+@media (min-width: 410px) {
+    .post {
+        padding: 5px;
+    }
+}
+
+@media (min-width: 620px) {
+    .post {
+        padding: 10px;
+    }
+}
+
+@media (min-width: 830px) {
+    .post {
+        padding: 15px;
+    }
+}
+
+@media (min-width: 1040px) {
+    .post {
+        padding: 20px;
+    }
+}
+@media (min-width: 1250px) {
+    .post {
+        padding: 25px;
+    }
+}
+@media (min-width: 1460px) {
+    .post {
+        padding: 30px;
+    }
+}
+@media (min-width: 1670px) {
+    .post {
+        padding: 35px;
+    }
+}
+
 .post .post-title {
     margin-bottom: 20px;
 }
