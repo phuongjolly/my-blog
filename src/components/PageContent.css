@@ -1,19 +1,17 @@
 .page-container {
     display: flex;
     flex-flow: row wrap;
-    justify-content: flex-start;
-    flex-wrap: wrap;
+    align-items: flex-start;
 }
 
 .page-container .item-box {
     display: flex;
-    flex: 1 0 200px;
+
     flex-flow: column;
     font-family: 'Montserrat', sans-serif;
     color: #666;
     align-items: flex-start;
     padding: 15px;
-    min-width: 300px;
 }
 
 @media (min-width: 410px) {
@@ -30,42 +28,50 @@
 
 @media (min-width: 830px) {
     .page-container .item-box {
-        max-width: calc(25%);
+        max-width: calc(33.3%);
     }
 }
 
 @media (min-width: 1040px) {
     .items .item {
-        max-width: calc(20%);
+        max-width: calc(25%);
     }
 }
 @media (min-width: 1250px) {
     .items .item {
-        max-width: calc(16.66667%);
+        max-width: calc(25%);
     }
 }
 @media (min-width: 1460px) {
     .items .item {
-        max-width: calc(14.28571%);
+        max-width: calc(16.66667%);
     }
 }
 @media (min-width: 1670px) {
     .items .item {
-        min-width: calc(12.5%);
+        min-width: calc(14.28571%);
     }
 }
 
 .page-container .item-box .photo {
     padding: 15px 0 15px 0;
     height: 100%;
+    flex-grow: 8;
+
 }
+
 .page-container .item-box .photo img {
     position: relative;
     width: 100%;
-    height: 100%;
+    height: 250px;
+    object-fit: cover;
 }
 
-.page-container .item-box .info-header {
+.page-container .item-box .info-content {
+    flex-grow: 2;
+}
+
+.page-container .item-box .info-content .info-header {
     padding-top: 10px;
     padding-bottom: 5px;
     font-size: 20px;
@@ -100,7 +106,7 @@
     height: 100%;
 }
 
-.page-container .item-box .info-detail {
+.page-container .item-box .info-content .info-detail {
     font-size: 14px;
     font-family: 'Montserrat', sans-serif;
 

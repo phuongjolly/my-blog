@@ -53,9 +53,11 @@ class PageContent extends React.Component {
                                     <img src={post.avatarUrl} alt="myBlog"/>
                                 </Link>
                             </div>
-                            <div className="info-header">{post.title}</div>
-                            <div className="info-detail">
-                                {post.description}
+                            <div className="info-content">
+                                <div className="info-header">{post.title}</div>
+                                <div className="info-detail">
+                                    {post.description}
+                                </div>
                             </div>
                         </div>
                     )
