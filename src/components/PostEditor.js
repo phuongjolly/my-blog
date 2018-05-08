@@ -333,8 +333,11 @@ class PostEditor extends React.Component {
                         <button className="ui button" onClick={() => this.onKeyStylingClick('LINE-THROUGH')}>
                             <i className="text width icon" />
                         </button>
-                        <button className="ui button" onClick={() => this.setBlockStyling('blockquote')}>
+                        <button className="ui button" onClick={() => this.setBlockStyling('block-quote')}>
                             <i className="quote left icon" />
+                        </button>
+                        <button className="ui button" onClick={() => this.setBlockStyling('code-block')}>
+                            <i className="code icon" />
                         </button>
                         <button className="ui button" onClick={() => this.addLink()}>
                             <i className="linkify icon" />
@@ -369,6 +372,7 @@ class PostEditor extends React.Component {
                                 handleKeyCommand={this.handleKeyCommand}
                                 ref={(element) => {this.editor = element;}}
                                 blockStyleFn={this.blockStyleFn}
+                                customStyleMap={styleMap}
                                 blockRendererFn={this.mediaBlockRenderer}
                                 placeholder="Tell your story"
                                 spellCheck
@@ -438,5 +442,13 @@ const Link = (props) => {
     );
 };
 
+const styleMap = {
+    CODE: {
+        backgroundColor: 'rgba(0, 0, 0, 0.05)',
+        fontFamily: '"Inconsolata", "Menlo", "Consolas", monospace',
+        fontSize: 16,
+        padding: 2,
+    },
+};
 
 export default PostEditor;

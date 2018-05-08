@@ -24,7 +24,7 @@ class MyProfile extends React.Component {
                 avatarUrl: user.avatarUrl,
                 password: user.password
             });
-        }catch (exeption) {
+        }catch (exception) {
             console.log("can not see profile");
         }
     }

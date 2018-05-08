@@ -56,7 +56,6 @@ class App extends Component {
                                 <Route path="/posts/:id/edit" component={PostEditor}/>
                                 <Route path="/posts/:id" component={Post} />
                                 <Redirect from="/posts/:id" to="/post/:id/edit"/>
-                                <Route path="/Error404" component={Error404}/>
                                 <Route component={PageContent}/>
                             </Switch>
                         </div>

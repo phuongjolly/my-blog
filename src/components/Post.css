@@ -1,55 +1,14 @@
 .post{
-
     display: flex;
     flex-flow: column;
-    margin: 0 50px 0 50px;
 }
 
-@media (min-width: 410px) {
-    .post {
-        padding: 5px;
-    }
-}
-
-@media (min-width: 620px) {
-    .post {
-        padding: 10px;
-    }
-}
-
-@media (min-width: 830px) {
-    .post {
-        padding: 15px;
-    }
-}
-
-@media (min-width: 1040px) {
-    .post {
-        padding: 20px;
-    }
-}
-@media (min-width: 1250px) {
-    .post {
-        padding: 25px;
-    }
-}
-@media (min-width: 1460px) {
-    .post {
-        padding: 30px;
-    }
-}
-@media (min-width: 1670px) {
-    .post {
-        padding: 35px;
-    }
-}
 
 .post .post-title {
     margin-bottom: 20px;
 }
 
 .post-title h1{
-    font-size: 26px;
     color: #242321;
     font-family: 'Montserrat';
     text-align: center;
@@ -58,7 +17,6 @@
 
 .post-description p {
     color: #666;
-    font-size: 16px;
     line-height: 26px;
     font-weight: 400;
     text-align: center;
@@ -67,7 +25,6 @@
 .post .post-content{
     color: #666;
     padding: 15px;
-    font-size: 16px;
     font-family: 'Questrial';
     font-weight: 400;
 }
@@ -91,18 +48,14 @@
     position: relative;
     color: #333;
     text-align: center;
-    font-size: 18px;
     padding-top: 14px;
     text-decoration: none;
-    width: 68px;
-    height: 68px;
     border-radius: 50%;
     background-clip: padding-box;
 }
 
 .post .social-button .likes p {
     font-weight: 400;
-    font-size: 14px;
 }
 
 .post .social-button .shares {
@@ -113,7 +66,6 @@
 }
 
 .post .social-button .shares h4{
-    font-size: 18px;
     font-weight: 300;
     font-family: 'Montserrat';
 }
@@ -125,7 +77,6 @@
 }
 
 .social-links a{
-    margin-right: 50px;
     color: #898989;
 }
 
@@ -135,9 +86,7 @@
     justify-content: space-between;
     font-family: 'Questrial';
     font-weight: 400;
-    font-size: 20px;
     margin: 60px 0 10px 0;
-    padding: 0 15px 0 15px;
 }
 
 .post .navigation .previous {
@@ -168,6 +117,122 @@
 }
 
 .post .tag .item {
-    margin-right: 3px;
     color: red;
+}
+
+.post .editor pre {
+    background-color: rgba(0, 0, 0, 0.05);
+    font-family: 'Inconsolata', 'Menlo', 'Consolas', monospace;
+    font-size: 16px;
+    padding: 20px;
+}
+
+@media (max-width: 620px) {
+    .post {
+        padding: 5px 1px 5px 1px;
+        margin: 0 5px 0 5px;
+    }
+
+    .post .post-content{
+        font-size: 14px;
+    }
+
+    .post-title h1{
+        font-size: 18px
+    }
+
+    .post-description p {
+        font-size: 14px;
+    }
+
+    .post .social-button .likes{
+        font-size: 14px;
+        width: 50px;
+        height: 50px;
+    }
+
+    .post .social-button .likes p {
+        font-size: 14px;
+    }
+
+    .post .social-button .shares h4 {
+        font-size: 14px;
+    }
+
+    .social-links a {
+        margin-right: 10px;
+        font-size: 14px;
+    }
+
+    .post .navigation {
+        padding: 0 5px 0 5px;
+        font-size: 14px;
+    }
+    .post .tag .item {
+        font-size: 14px;
+    }
+
+    .post .editor pre {
+        background-color: rgba(0, 0, 0, 0.05);
+        font-family: 'Inconsolata', 'Menlo', 'Consolas', monospace;
+        font-size: 14px;
+        padding: 5px;
+    }
+}
+
+@media (min-width: 830px) {
+    .post {
+        padding: 20px;
+        margin: 0 100px 0 100px;
+    }
+
+    .post .post-content{
+        font-size: 16px;
+    }
+
+    .post-title h1{
+        font-size: 26px;
+    }
+
+    .post-description p {
+        font-size: 16px;
+    }
+
+    .post .social-button .likes{
+        font-size: 18px;
+        width: 68px;
+        height: 68px;
+    }
+
+    .post .social-button .likes p {
+        font-size: 11px;
+    }
+
+    .post .social-button .shares h4 {
+        font-size: 18px;
+    }
+    .social-links a {
+        margin-right: 50px;
+        font-size: 15px;
+    }
+
+    .post .navigation {
+        padding: 0 15px 0 15px;
+        font-size: 20px;
+    }
+
+    .post .tag .item {
+        font-size: 14px;
+    }
+
+    .post .editor pre {
+        background-color: rgba(0, 0, 0, 0.05);
+        font-family: 'Inconsolata', 'Menlo', 'Consolas', monospace;
+        font-size: 16px;
+        padding: 20px;
+        margin-left: 20px;
+        width: 70%;
+        line-height: 0.8;
+    }
+
 }

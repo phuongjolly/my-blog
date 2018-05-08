@@ -3,12 +3,11 @@ export async function request(url, options = {}) {
         ...options,
         credentials: 'include'
     });
-    try {
-        const value = await response.json();
-        return value;
-    }
-    catch (e) {
-        return null;
+
+    if (response.status === 200) {
+        return await response.json();
+    } else {
+        throw await response.json();
     }
 
 }

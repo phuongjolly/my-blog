@@ -3,30 +3,43 @@ import "./PageContent.css"
 import {Link} from "react-router-dom";
 import {get} from "./Http"
 import {connect} from "react-redux";
+import ReactLoading from "react-loading"
 
 class PageContent extends React.Component {
     state = {
         posts: [],
         currentUserIsAdmin: false,
+        loading: false
     };
 
     async componentDidMount() {
+        this.setState({
+            loading: true
+        });
+
         const posts = await get("/api/posts");
-        console.log(posts);
+
         this.setState({posts});
 
-        const currentUser = await get("/api/users/currentUser");
-        if(currentUser) {
-            let isAdmin = false;
+        try{
+            const currentUser = await get("/api/users/currentUser");
             if(currentUser) {
-                isAdmin = await get("/api/users/isAdmin");
+                console.log("i am here");
+                let isAdmin = false;
+                if(currentUser) {
+                    isAdmin = await get("/api/users/isAdmin");
+                }
+                this.setState({
+                    currentUserIsAdmin: isAdmin,
+                });
             }
-            this.setState({
-                currentUserIsAdmin: isAdmin,
-            });
+        } catch (e) {
+
         }
 
-
+        this.setState({
+            loading: false
+        })
 
     }
     render () {
@@ -37,7 +50,7 @@ class PageContent extends React.Component {
                 <div className="item-box">
                     <div className="addNew">
                         <Link to={`/posts/add`}>
-                            <i className="plus icon"></i>
+                            <i className="plus icon"/>
                         </Link>
                     </div>
                 </div>
@@ -45,6 +58,8 @@ class PageContent extends React.Component {
         }
         return (
             <div className="page-container">
+                {this.state.loading &&
+                    <div className="loading"><ReactLoading type="cubes" color="#666"/></div>}
                 {this.state.posts.map((post) => (
                     post.display && (
                         <div className="item-box" key={post.id}>

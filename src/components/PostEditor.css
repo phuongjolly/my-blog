@@ -30,6 +30,7 @@
 .editor .align-left >div,
 .editor .align-left img {
     text-align: left;
+    max-width: 100%;
 
 }
 
@@ -54,6 +55,17 @@
 
 }
 
+.editor figure img {
+    max-width: 100%;
+}
+
+.editor .public-DraftStyleDefault-pre {
+    background-color: rgba(0, 0, 0, 0.05);
+    font-family: 'Inconsolata', 'Menlo', 'Consolas', monospace;
+    font-size: 16px;
+    padding: 20px;
+}
+
 .editorLink > span{
     text-decoration: underline;
     color: #3B5998;
@@ -71,3 +83,12 @@
     width: 300px;
     height: 300px;
 }
+
+@media (max-width: 620px) {
+    figure {
+        margin: 1em 5px;
+    }
+}
+
+
+

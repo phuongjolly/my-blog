@@ -19,12 +19,13 @@ class Post extends React.Component {
         content: '',
         comments: [],
         avatarUrl: '',
-        currentUserId: 0,
-        currentUserName: '',
+        user: '',
         currentUserIsAdmin: false,
         contentToReply: '',
         gotoPageId: '',
-        tags: []
+        tags: [],
+        loading: false,
+        message: ''
     };
 
     async componentWillUnmount() {
@@ -49,6 +50,10 @@ class Post extends React.Component {
                 }
             },
             blockStyleFn: (block) =>{
+                console.log("check blog first");
+                console.log(block.getType());
+
+                console.log("=====");
                 const textAlignStyle = block.getData().get(ALIGNMENT_DATA_KEY);
                 switch (textAlignStyle){
                     case 'RIGHT':
@@ -77,7 +82,7 @@ class Post extends React.Component {
                 }
             },
 
-            defaultBlockTag: 'div'
+            defaultBlockTag: 'p'
         };
         const content = stateToHTML(convertFromRaw(JSON.parse(data.content)), options);
         console.log("check data");
@@ -116,38 +121,46 @@ class Post extends React.Component {
 
             const isAdmin = await get("/api/users/isAdmin");
             this.setState({
-                currentUserId: currentUser.id,
-                currentUserName: currentUser.name,
+                user: currentUser,
                 currentUserIsAdmin: isAdmin
             });
         } else {
             this.setState({
-                currentUserId: 0,
-                currentUserName: ''
+                user: ''
             })
         }
     }
 
     async onReplyButtonClick() {
-        const {currentUser} = store.getState().authentication;
+        this.setState({loading: true});
+
         const comment = {
             content: this.state.contentToReply,
-            user: currentUser,
         }
+
         const {id} = this.props.match.params;
-        const response = await post(`/api/posts/${id}/addNewComment`, comment);
+        try{
+            const newComment = await post(`/api/posts/${id}/addNewComment`, comment);
 
-        if(response) {
+            if(newComment) {
 
+                this.setState({
+                    comments: [
+                        ...this.state.comments,
+                        newComment
+                    ],
+                    loading: false,
+                    message: "Add comment successful"
+                });
+            }
+        } catch (e) {
             this.setState({
-                comments: [
-                    ...this.state.comments,
-                    comment
-                ]
+                loading: false,
+                message: e.message
             });
-        } else {
-            console.log("no call add comment");
+            console.log(this.state.message);
         }
+
     }
 
     gotoPreviousPage() {
@@ -209,7 +222,6 @@ class Post extends React.Component {
                         </div>
 
                         <button type="button" className="ui button" onClick={() => this.onReplyButtonClick()}>Add Reply</button>
-
                     </form>
                 </div>);
         } else {

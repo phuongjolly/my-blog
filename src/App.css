@@ -13,7 +13,7 @@ body {
   font-weight: 400;
   font-size: 15px;
   line-height: 1.33333333;
-    padding: 30px;
+
 }
 
 .App-logo {
@@ -81,14 +81,11 @@ body {
 
 .portfolio-container {
     display: flex;
-    flex-flow: row;
-    align-items: flex-end;
-    justify-content: space-between;
+    color: #242321;
+    font-family: 'Montserrat', sans-serif;
     margin-bottom: 20px;
     padding-left: 15px;
     padding-right: 15px;
-    color: #242321;
-    font-family: 'Montserrat', sans-serif;
 }
 
 .portfolio-title-holder {
@@ -105,7 +102,6 @@ body {
 
 .portfolio-content {
     margin-top: 20px;
-    font-size: 16px;
     color: #666;
     line-height: 26px;
 }
@@ -113,13 +109,11 @@ body {
 .portfolio-menu {
     display: flex;
     flex-flow: row;
-    justify-content: flex-end;
 }
 
 .portfolio-menu .item {
-    margin-left: 20px;
     color: #666;
-    font-size: 16px;
+
 }
 
 .wrapper {
@@ -128,42 +122,41 @@ body {
     padding-bottom: 100px;
 }
 
-@media (min-width: 410px) {
-    .post {
+@media (max-width: 620px) {
+    .App {
         padding: 5px;
     }
-}
-
-@media (min-width: 620px) {
-    .post {
-        padding: 10px;
+    .portfolio-container {
+        flex-flow: column;
+        align-items: flex-start;
     }
+    .portfolio-menu {
+        margin-top: 30px;
+        justify-content: flex-start;
+    }
+    .portfolio-menu .item {
+        margin-right: 10px;
+        font-size: 14px;
+    }
+
 }
 
 @media (min-width: 830px) {
-    .post {
-        padding: 20px;
+    .App {
+        padding: 30px;
     }
-}
 
-@media (min-width: 1040px) {
-    .post {
-        padding: 40px;
+    .portfolio-container {
+        flex-flow: row;
+        align-items: flex-end;
+        justify-content: space-between;
     }
-}
-@media (min-width: 1250px) {
-    .post {
-        padding: 50px;
+    .portfolio-menu {
+        justify-content: flex-end;
     }
-}
-@media (min-width: 1460px) {
-    .post {
-        padding: 60px;
-    }
-}
-@media (min-width: 1670px) {
-    .post {
-        padding: 70px;
+    .portfolio-menu .item {
+        margin-left: 20px;
+        font-size: 16px;
     }
 }
 

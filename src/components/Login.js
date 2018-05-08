@@ -3,8 +3,6 @@ import {Redirect} from "react-router-dom";
 import {get, post} from "./Http";
 import store from "./stores/store";
 import {login} from "./stores/authenticationReducer";
-import Error403 from "./Error403";
-import {RingLoader} from "react-spinners"
 import "./Authentication.css"
 
 class Login extends React.Component {
@@ -13,14 +11,13 @@ class Login extends React.Component {
         password: '',
         message: '',
         redirectToRegister: false,
-        redirectToError403: false,
-        redirectToError404: false,
         redirectToPreviousPage: false,
         loading: false
     };
 
 
-    async onLoginClick() {
+    async onLoginClick(event) {
+        event.preventDefault();
         if(!this.state.email || !this.state.password) {
             return;
         }
@@ -34,44 +31,37 @@ class Login extends React.Component {
             loading: true
         });
 
-        const response = await post("/api/users/login", user);
+        try {
+            const response = await post("/api/users/login", user);
+            console.log("=====");
+            console.log(response);
 
-        if(response) {
-            if(response.status === 403) {
-                this.setState({
-                    massage: "Login failed",
-                    redirectToError403: true
-                });
-            } else if(response.status === 404) {
-                this.setState({
-                    massage: "Login failed",
-                    redirectToError404: true
-                });
-            } else {
-                this.setState({
-                    message: "Login successful",
-                    redirectToPreviousPage: true,
-                    loading: false
-                });
-                try {
-                    const currentUser = await get("/api/users/currentUser");
-                    if (currentUser) {
-                        store.dispatch(login(currentUser));
+            this.setState({
+                message: "Login successful",
+                redirectToPreviousPage: true,
+                loading: false
+            });
+            try {
+                const currentUser = await get("/api/users/currentUser");
+                if (currentUser) {
+                    store.dispatch(login(currentUser));
 
-                    } else {
-                        console.log("can not fetch");
-                    }
-                } catch (exception) {
-                    console.log("No logged in user.");
+                } else {
+                    console.log("can not fetch");
                 }
+            } catch (exception) {
+                console.log("No logged in user.");
             }
-        }
 
+        } catch (error) {
+            this.setState({
+                message: error.message,
+                loading: false
+            });
+        }
     }
 
     render() {
-        console.log(this.state.message);
-        let $error403 = '';
 
         if(this.state.redirectToPreviousPage) {
             if(this.props.history.location.state){
@@ -83,43 +73,34 @@ class Login extends React.Component {
 
 
         } else if(this.state.redirectToRegister) {
-
             return <Redirect to={`/user/register`} />;
-
-        } else if(this.state.redirectToError403) {
-
-            $error403 = <Error403/>;
-
-        } else if(this.state.redirectToError404) {
-
-            return <Redirect to={`/Error404`}/>;
 
         }
 
         return (
-
             <div className="authForm">
-                <form className="ui form">
+                <h3 className="errorMessage">{this.state.message}</h3>
+                <form className="ui form" onSubmit={(event) => { this.onLoginClick(event); return false;}}>
                     <div className="field">
                         <label>Email </label>
-                        <input type="text" name="email" placeholder="Email"
+                        <input type="email" required name="email" placeholder="Email"
                                onChange={(event) => this.setState({email: event.target.value})}
                                value={this.state.email}
                         />
                     </div>
                     <div className="field">
                         <label>Password</label>
-                        <input type="password" name="password" placeholder="Password"
+                        <input type="password" required name="password" placeholder="Password"
                             onChange={(event) => this.setState({password: event.target.value})}
                             value={this.state.password}
                         />
                     </div>
                     <div className="formButton">
-                        <button className={this.state.loading ? "ui loading button" : "ui button"} type="button" onClick={() => this.onLoginClick()}>Login</button>
+                        <button className={this.state.loading ? "ui loading button" : "ui button"} type="submit">Login</button>
                         <button className="ui button" type="button" onClick={() => this.setState({redirectToRegister: true})}>Register</button>
                     </div>
                 </form>
-                {$error403}
+
             </div>
         );
     }

@@ -14,7 +14,9 @@ class Register extends React.Component {
 
     };
 
-    async onRegisterClick() {
+    async onRegisterClick(event) {
+        event.preventDefault();
+
         const user = {
             name: this.state.name,
             email: this.state.email,
@@ -23,48 +25,53 @@ class Register extends React.Component {
 
         this.setState({loading: true});
 
-        const response = await post("/api/users/register", user);
+        try{
+            await post("/api/users/register", user);
 
-        if(response){
+            //if(response){
             this.setState({
                 message: "Register successful",
                 redirectToLogin: true,
                 loading: false
+            });
+            //}
+        } catch (e) {
+            this.setState({
+                message: e.message,
+                loading: false
             })
         }
+
     }
     render () {
-        if(this.state.message) {
-            console.log(this.state.message);
-        }
 
         if(this.state.redirectToLogin) {
             return (<Redirect to={`/user/login`} />);
         }
         return (
-
             <div className="authForm">
-                <form className="ui form">
+                <h3 className="errorMessage">{this.state.message}</h3>
+                <form className="ui form" onSubmit={(event) => {this.onRegisterClick(event); return false;}}>
                     <div className="field">
                         <label>First Name</label>
-                        <input type="text" name="first-name" placeholder="First Name"
+                        <input required type="text" name="first-name" placeholder="First Name"
                                 onChange={(event) => this.setState({name: event.target.value})}
                                 value={this.state.name} />
                     </div>
                     <div className="field">
                         <label>Email</label>
-                        <input type="text" name="email" placeholder="Email"
+                        <input type="email" required type="text" name="email" placeholder="Email"
                                onChange={(event) => this.setState({email: event.target.value})}
                                value={this.state.email} />
                     </div>
                     <div className="field">
                         <label>Password</label>
-                        <input type="password" name="password" placeholder="Password"
+                        <input required type="password" name="password" placeholder="Password"
                                onChange={(event) => this.setState({password: event.target.value})}
                                value={this.state.password}/>
                     </div>
                     <div className="formButton">
-                        <button className={this.state.loading ? "ui loading button" : "ui button"} type="button" onClick={() => this.onRegisterClick()}>Register</button>
+                        <button className={this.state.loading ? "ui loading button" : "ui button"} type="submit">Register</button>
                     </div>
                 </form>
             </div>
@@ -73,3 +80,4 @@ class Register extends React.Component {
 }
 
 export default Register;
+
