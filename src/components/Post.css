@@ -1,6 +1,7 @@
 .post{
     display: flex;
     flex-flow: column;
+    word-wrap: break-word;
 }
 
 
@@ -127,6 +128,14 @@
     padding: 20px;
 }
 
+pre {
+    white-space: pre-wrap;       /* css-3 */
+    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+
 @media (max-width: 620px) {
     .post {
         padding: 5px 1px 5px 1px;
@@ -175,8 +184,13 @@
     .post .editor pre {
         background-color: rgba(0, 0, 0, 0.05);
         font-family: 'Inconsolata', 'Menlo', 'Consolas', monospace;
-        font-size: 14px;
+        font-size: 12px;
         padding: 5px;
+        line-height: 0.7;
+    }
+
+    .post .editor pre code {
+        font-size: 12px;
     }
 }
 
@@ -230,9 +244,51 @@
         font-family: 'Inconsolata', 'Menlo', 'Consolas', monospace;
         font-size: 16px;
         padding: 20px;
-        margin-left: 20px;
-        width: 70%;
-        line-height: 0.8;
+        margin-left: 50px;
+        margin-right: 50px;
+        line-height: 1.0;
+
     }
 
+    .post .editor pre code {
+        font-size: 14px;
+    }
+
+}
+
+.post .loading {
+    display: flex;
+    flex-flow: row;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.image-preload {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    background-size: cover;
+}
+
+.image-loaded {
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    background-size: cover;
+
+    opacity: 0;
+
+    transition: opacity 1s ease;
+}
+
+.image-fade-in {
+    opacity: 1;
 }

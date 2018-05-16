@@ -203,8 +203,6 @@ class PostEditor extends React.Component {
         this.state.tags.map((tag) => (
             tagsName.push(tag.name)
         ));
-        console.log("=====");
-        console.log(tagsName);
         if(this.state.newTag !== '' && (!tagsName.includes(this.state.newTag) || this.state.tags.length <= 0)) {
 
             const tag = {name: this.state.newTag};
@@ -276,9 +274,9 @@ class PostEditor extends React.Component {
         const {editorState, avatarUrl} = this.state;
         let $avatarPreview = '';
         if(avatarUrl) {
-            $avatarPreview = <img src={avatarUrl} />;
+            $avatarPreview = <img src={avatarUrl} alt="avatar"/>;
         } else {
-            $avatarPreview = <img src="https://demokaliumsites-laborator.netdna-ssl.com/freelancer/wp-content/uploads/2015/03/8tracks_covers01_905-655x545.jpg" />;
+            $avatarPreview = <img src="https://demokaliumsites-laborator.netdna-ssl.com/freelancer/wp-content/uploads/2015/03/8tracks_covers01_905-655x545.jpg" alt="avatar" />;
         }
 
         if (this.state.redirectToPost) {
@@ -404,11 +402,10 @@ class PostEditor extends React.Component {
 }
 
 const Image = (props) => {
-    return <img src={props.src} />
+    return <img src={props.src} alt="content"/>
 };
 
 const Media = (props) => {
-    console.log(props);
     const entity = props.contentState.getEntity(
         props.block.getEntityAt(0)
     );
@@ -446,7 +443,7 @@ const styleMap = {
     CODE: {
         backgroundColor: 'rgba(0, 0, 0, 0.05)',
         fontFamily: '"Inconsolata", "Menlo", "Consolas", monospace',
-        fontSize: 16,
+        fontSize: 14,
         padding: 2,
     },
 };

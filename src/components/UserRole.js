@@ -31,18 +31,6 @@ class UserRole extends React.Component {
 
 
     render() {
-        let roleList;
-        if(!this.state.displayButton) {
-            roleList =
-                (<div>
-                {this.state.roles.map((role) => (
-                    <div key={role.id}>
-                        <div>Name: </div>
-                        <div>{role.name}</div>
-                    </div>
-                ))}
-                </div>);
-        }
         return (
             <div>
 

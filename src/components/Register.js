@@ -60,7 +60,7 @@ class Register extends React.Component {
                     </div>
                     <div className="field">
                         <label>Email</label>
-                        <input type="email" required type="text" name="email" placeholder="Email"
+                        <input type="email" required name="email" placeholder="Email"
                                onChange={(event) => this.setState({email: event.target.value})}
                                value={this.state.email} />
                     </div>

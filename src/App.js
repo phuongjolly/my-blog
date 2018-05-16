@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import PageContent from "./components/PageContent";
 import Post from "./components/Post";
-import {Route, Router, Redirect} from "react-router-dom";
+import {Route, Router} from "react-router-dom";
 import {Switch} from "react-router";
 import createBrowserHistory from 'history/createBrowserHistory';
 import Header from "./components/Header";
@@ -14,18 +14,26 @@ import MyProfile from "./components/MyProfile";
 import store from "./components/stores/store";
 import {login} from "./components/stores/authenticationReducer";
 import {Provider} from "react-redux";
-import Error404 from "./components/Error404";
 import UserList from "./components/UserList";
 import UserRole from "./components/UserRole";
 import Loading from "./components/Loading";
 import Tags from "./components/Tags";
+import DialogModal from "./components/DialogModal";
+import {close} from "./components/stores/modalReducer";
 
 const customHistory = createBrowserHistory();
 
 class App extends Component {
+    state = {
+        openModalDialog: false
+    }
+
+    componentWillUnmount(){
+        this.unsubscribe();
+    }
 
     async componentDidMount() {
-
+        this.unsubscribe = store.subscribe(() => this.updateModal());
         try {
             const currentUser = await get("/api/users/currentUser");
             if (currentUser) {
@@ -34,6 +42,17 @@ class App extends Component {
         } catch (exception) {
             console.log("No logged in user.");
         }
+    }
+
+    updateModal(){
+        const {openModalDialog} = store.getState().showModalDialog;
+        this.setState({
+            openModalDialog
+        })
+    }
+
+    closeModal() {
+        store.dispatch(close());
     }
 
     render() {
@@ -55,9 +74,13 @@ class App extends Component {
                                 <Route path="/posts/add" component={PostEditor}/>
                                 <Route path="/posts/:id/edit" component={PostEditor}/>
                                 <Route path="/posts/:id" component={Post} />
-                                <Redirect from="/posts/:id" to="/post/:id/edit"/>
+                                <Route path="/tags/:name" component={PageContent}/>
                                 <Route component={PageContent}/>
                             </Switch>
+                            <DialogModal show={this.state.openModalDialog}
+                                         onClose={() => this.closeModal()}>
+                                Here's some content for the modal
+                            </DialogModal>
                         </div>
                         <div className="footer">
                             <div className="social-links">

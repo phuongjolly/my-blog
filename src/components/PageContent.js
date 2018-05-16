@@ -12,12 +12,27 @@ class PageContent extends React.Component {
         loading: false
     };
 
-    async componentDidMount() {
+    componentWillReceiveProps(newProps, oldProps) {
+        const {name} = newProps.match.params;
+        const oldName = this.props.match.params.name;
+
+        if (name !== oldName) {
+            this.loadPosts(name);
+        }
+    }
+
+    async loadPosts(name) {
+        let posts;
+
         this.setState({
             loading: true
         });
 
-        const posts = await get("/api/posts");
+        if (name === undefined){
+            posts = await get(`/api/posts/`);
+        } else {
+            posts = await get(`/api/posts/tags/${name}`);
+        }
 
         this.setState({posts});
 
@@ -40,8 +55,13 @@ class PageContent extends React.Component {
         this.setState({
             loading: false
         })
-
     }
+
+    componentDidMount() {
+        const {name} = this.props.match.params;
+        this.loadPosts(name);
+    }
+
     render () {
 
         let addNewButton = '';

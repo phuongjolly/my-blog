@@ -10,6 +10,10 @@ import store from "./stores/store"
 
 import {ALIGNMENT_DATA_KEY} from "./plugins/ExtendedRichUtils";
 import {connect} from "react-redux";
+import ReactLoading from "react-loading";
+import ImageLazyLoaded from "./ImageLazyLoaded";
+import ModalQuestion from "./ModalQuestion";
+import {open} from "./stores/modalReducer"
 
 class Post extends React.Component {
     state = {
@@ -25,7 +29,9 @@ class Post extends React.Component {
         gotoPageId: '',
         tags: [],
         loading: false,
-        message: ''
+        message: '',
+        deletePost: false,
+        redirectToHome: false
     };
 
     async componentWillUnmount() {
@@ -33,12 +39,15 @@ class Post extends React.Component {
     }
 
     async componentDidMount(){
+        this.setState({loading: true});
+
         this.updateCurrentUser();
         this.unsubscribe = store.subscribe(() => this.updateCurrentUser());
 
         const {id} = this.props.match.params;
 
         const data = await get(`/api/posts/${id}`);
+
         let options = {
             inlineStyles: {
                 BOLD: {element: 'b'},
@@ -50,10 +59,7 @@ class Post extends React.Component {
                 }
             },
             blockStyleFn: (block) =>{
-                console.log("check blog first");
-                console.log(block.getType());
 
-                console.log("=====");
                 const textAlignStyle = block.getData().get(ALIGNMENT_DATA_KEY);
                 switch (textAlignStyle){
                     case 'RIGHT':
@@ -81,12 +87,17 @@ class Post extends React.Component {
                         return '';
                 }
             },
-
+            /*blockRenderers: {
+                atomic: (block) => {
+                    return {
+                        component: ImageLazyLoaded
+                    }
+                }
+            },*/
             defaultBlockTag: 'p'
         };
         const content = stateToHTML(convertFromRaw(JSON.parse(data.content)), options);
-        console.log("check data");
-        console.log(data);
+
         if(data){
             this.setState({
                 id: data.id,
@@ -94,7 +105,8 @@ class Post extends React.Component {
                 description: data.description,
                 avatarUrl: data.avatarUrl,
                 content: content,
-                tags: data.tags
+                tags: data.tags,
+                loading: false
             });
         } else {
             this.setState({
@@ -102,7 +114,8 @@ class Post extends React.Component {
                 description: '',
                 avatarUrl: '',
                 content: '',
-                tags: []
+                tags: [],
+                loading: false
             });
         }
 
@@ -163,19 +176,13 @@ class Post extends React.Component {
 
     }
 
-    gotoPreviousPage() {
-        const previousId = parseInt(this.props.match.params.id) - 1;
-        if(previousId > 2){
-            this.switchPage(previousId);
-        }
+    goToPreviousPage() {
+        console.log("go to previous page");
 
     }
 
-    gotoNextPage() {
-        const nextPageId = parseInt(this.props.match.params.id) + 1;
-        if(nextPageId < 5) {
-            this.switchPage(nextPageId);
-        }
+    goToNextPage() {
+        console.log("go to next page");
 
     }
 
@@ -185,28 +192,55 @@ class Post extends React.Component {
         });
     }
 
-    render(){
-        const elementHTML = ReactHtmlParser(this.state.content);
+    async deletePost() {
+        const {id} = this.props.match.params;
 
+        await fetch(`/api/posts/${id}/delete`, {
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include'
+        });
+        this.setState({
+            redirectToHome: true
+        });
+
+        store.dispatch(open("Delete done!"));
+
+    }
+
+
+    render(){
         if(this.state.redirectToRegister) {
             return (<Redirect to={`/user/register`}/>);
         }
 
-        if(+this.state.gotoPageId != 0) {
+        if(+this.state.gotoPageId !== 0) {
             return <Redirect to={`/posts/${this.state.gotoPageId}`}/>
         }
 
-        let editButton = '';
+        if(this.state.redirectToHome) {
+            console.log("i redirect to home");
+            return <Redirect to={"/posts/"}/>
+        }
+
+        const elementHTML = ReactHtmlParser(this.state.content);
+
+        let controlButtons = '';
         let replyForm = '';
         let loginButton = '';
         if(this.props.currentUser) {
             if(this.state.currentUserIsAdmin) {
-                editButton = (
+                controlButtons = (
                     <div className="post-button">
                         <button className="ui button">
                             <Link to={`/posts/${this.state.id}/edit`}>
                                 Edit
                             </Link>
+                        </button>
+                        <button className="ui button" onClick={() => this.setState({deletePost: true})}>
+                            Delete
                         </button>
                     </div>
                 );
@@ -216,9 +250,9 @@ class Post extends React.Component {
                 <div>
                     <form className="ui reply form">
                         <div className="field">
-                            <textarea aria-valuetext={this.state.contentToReply}
+                            <textarea value={this.state.contentToReply}
                                       onChange={(event) => this.setState({contentToReply: event.target.value})}
-                            ></textarea>
+                            />
                         </div>
 
                         <button type="button" className="ui button" onClick={() => this.onReplyButtonClick()}>Add Reply</button>
@@ -276,7 +310,15 @@ class Post extends React.Component {
 
         return (
             <div className="post">
-                {editButton}
+                {this.state.loading &&
+                    <div className="loading"><ReactLoading type="cubes" color="#666"/></div>
+                }
+                {controlButtons}
+
+                {this.state.deletePost &&
+                    <ModalQuestion deletePost={() => this.deletePost()}/>
+                }
+
                 <div>
                     <div className="post-title">
                         <h1>
@@ -307,7 +349,7 @@ class Post extends React.Component {
                 </div>
                 <div className="social-button">
                     <div className="likes">
-                        <i className="heart outline icon"></i>
+                        <i className="heart outline icon" />
                         <p>157</p>
                     </div>
                     <div className="shares">
@@ -321,14 +363,14 @@ class Post extends React.Component {
                     </div>
                 </div>
                 <div className="navigation">
-                    <div className="previous" onClick={() => this.gotoPreviousPage()}>
+                    <div className="previous" onClick={() => this.goToPreviousPage()}>
                             Previous Page
                     </div>
                     <div>
-                        <i className="th large icon"></i>
+                        <i className="th large icon" />
                     </div>
                     <div className="next">
-                        <a onClick={() => this.gotoNextPage()}>
+                        <a onClick={() => this.goToNextPage()}>
                         Next Page
                         </a>
                     </div>

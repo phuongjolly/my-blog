@@ -12,11 +12,9 @@ class UserList extends React.Component{
         console.log("user roles ");
 
         if(users) {
-            this.setState({users})
+            this.setState({users});
         }
-        this.state.users.map((user) => {
-            console.log(user);
-        });
+
     }
 
     async onSetAdmin(user)
