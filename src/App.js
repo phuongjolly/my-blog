@@ -61,36 +61,38 @@ class App extends Component {
             <Provider store={store}>
                 <Router history={customHistory}>
                     <div className="App">
-                        <div className="wrapper">
-                            <Header />
-                            <Switch>
-                                <Route path="/loading" component={Loading}/>
-                                <Route path="/user/me" component={MyProfile}/>
-                                <Route path="/user/userList" component={UserList}/>
-                                <Route path="/addRole" component={UserRole}/>
-                                <Route path="/user/register" component={Register}/>
-                                <Route path="/user/login" component={Login}/>
-                                <Route path="/posts/tags/:name" component={Tags}/>
-                                <Route path="/posts/add" component={PostEditor}/>
-                                <Route path="/posts/:id/edit" component={PostEditor}/>
-                                <Route path="/posts/:id" component={Post} />
-                                <Route path="/tags/:name" component={PageContent}/>
-                                <Route component={PageContent}/>
-                            </Switch>
-                            <DialogModal show={this.state.openModalDialog}
-                                         onClose={() => this.closeModal()}>
-                                Here's some content for the modal
-                            </DialogModal>
-                        </div>
-                        <div className="footer">
-                            <div className="social-links">
-                                <a href="https://www.facebook.com">Facebook</a>
-                                <a href="https://www.facebook.com">Twitter</a>
-                                <a href="https://www.facebook.com">Google+</a>
-                                <a href="https://www.facebook.com">Email</a>
+                        <div className="container">
+                            <div className="wrapper">
+                                <Header />
+                                <Switch>
+                                    <Route path="/loading" component={Loading}/>
+                                    <Route path="/user/me" component={MyProfile}/>
+                                    <Route path="/user/userList" component={UserList}/>
+                                    <Route path="/addRole" component={UserRole}/>
+                                    <Route path="/user/register" component={Register}/>
+                                    <Route path="/user/login" component={Login}/>
+                                    <Route path="/posts/tags/:name" component={Tags}/>
+                                    <Route path="/posts/add" component={PostEditor}/>
+                                    <Route path="/posts/:id/edit" component={PostEditor}/>
+                                    <Route path="/posts/:id" component={Post} />
+                                    <Route path="/tags/:name" component={PageContent}/>
+                                    <Route component={PageContent}/>
+                                </Switch>
+                                <DialogModal show={this.state.openModalDialog}
+                                             onClose={() => this.closeModal()}>
+                                    Here's some content for the modal
+                                </DialogModal>
                             </div>
-                            <div className="copyright">
-                                © Copyright 2018. All Rights Reserved.
+                            <div className="footer">
+                                <div className="social-links">
+                                    <a href="https://www.facebook.com">Facebook</a>
+                                    <a href="https://www.facebook.com">Twitter</a>
+                                    <a href="https://www.facebook.com">Google+</a>
+                                    <a href="https://www.facebook.com">Email</a>
+                                </div>
+                                <div className="copyright">
+                                    © Copyright 2018. All Rights Reserved.
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -11,7 +11,6 @@ import store from "./stores/store"
 import {ALIGNMENT_DATA_KEY} from "./plugins/ExtendedRichUtils";
 import {connect} from "react-redux";
 import ReactLoading from "react-loading";
-import ImageLazyLoaded from "./ImageLazyLoaded";
 import ModalQuestion from "./ModalQuestion";
 import {open} from "./stores/modalReducer"
 
