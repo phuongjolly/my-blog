@@ -3,10 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "babel-cli": "^6.26.0",
     "draft-convert": "^2.0.1",
     "draft-js": "^0.10.5",
     "draft-js-export-html": "^1.2.0",
     "draft-js-plugins-editor": "^2.0.7",
+    "eslint": "^4.19.1",
     "history": "^4.7.2",
     "immutable": "^3.8.2",
     "prop-types": "^15.6.1",
@@ -21,6 +23,7 @@
     "react-spinners": "^0.3.2",
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.3.0",
     "semantic-react": "^0.12.0",
     "semantic-ui-css": "^2.3.1",
     "semantic-ui-react": "^0.79.0"
@@ -29,7 +32,18 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint ."
   },
-  "proxy": "http://localhost:8080/"
+  "proxy": "http://localhost:8080/",
+  "devDependencies": {
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-import": "^2.12.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.9.1"
+  },
+  "eslintIgnore": [
+    "registerServiceWorker.js",
+    "index.js"
+  ]
 }

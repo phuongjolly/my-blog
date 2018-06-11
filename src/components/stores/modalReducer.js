@@ -1,36 +1,42 @@
 const initialState = {
-    openModalDialog: false,
-    message: ''
-}
+  isActiveModalQuestion: false,
+  message: '',
+};
 
-const OPEN = "open";
-const CLOSE = "close";
+const OPEN = 'openModalQuestion';
+const CLOSE = 'closeModalQuestion';
 
 export function modalReducer(state = initialState, action) {
-    switch (action.type) {
-        case OPEN: {
-            return {
-                openModalDialog: true
-            }
-        }
-        case CLOSE: {
-            return {
-                openModalDialog: false
-            }
-        }
-        default: return state;
+  switch (action.type) {
+    case OPEN: {
+      return {
+        isActiveModalQuestion: true,
+      };
     }
+    case CLOSE: {
+      return {
+        isActiveModalQuestion: false,
+      };
+    }
+    default: return state;
+  }
 }
 
-export function open(message) {
-    return {
+export const modalActions = {
+  openModal(message) {
+    return (dispatch) => {
+      dispatch({
         type: OPEN,
-        message
-    }
-}
+        message,
+      });
+    };
+  },
 
-export function close() {
-    return {
-        type: CLOSE
-    }
-}
+  closeModal() {
+    return (dispatch) => {
+      dispatch({
+        type: CLOSE,
+      });
+    };
+  },
+};
