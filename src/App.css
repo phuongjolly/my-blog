@@ -2,7 +2,7 @@
 
 body {
   background:#EDEDED;
-  padding: 22px;
+  padding: 10px;
 
 }
 
@@ -154,7 +154,7 @@ body {
 
 @media (min-width: 830px) {
     .App {
-        padding: 30px;
+        padding: 10px;
     }
 
     .portfolio-container {

@@ -20,7 +20,7 @@ class PageContent extends React.Component {
     const oldName = this.props.match.params.name;
 
     if (name !== oldName) {
-      this.loadPosts(name);
+      this.props.loadPosts(name);
     }
   }
 

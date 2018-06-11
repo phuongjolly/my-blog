@@ -7,7 +7,8 @@ import { postListReducer } from './postListReducer';
 import { postReducer } from './postReducer';
 import { dialogReducer } from './dialogReducer';
 import { postEditorReducer } from './postEditorReducer';
-import {registerReducer} from "./registerReducer";
+import { registerReducer } from './registerReducer';
+import { postTagsReducer } from './postTagsReducer';
 
 
 const reducers = {
@@ -18,6 +19,7 @@ const reducers = {
   dialogModal: dialogReducer,
   postEditor: postEditorReducer,
   register: registerReducer,
+  postsByTag: postTagsReducer,
 };
 
 const store = createStore(
