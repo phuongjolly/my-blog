@@ -142,130 +142,124 @@ class PostEditor extends React.Component {
 
     return (
       <div className="editor-root">
-        {postObject &&
-          <div>
-            <div>
-              <div className="ui fluid input post-title">
-                <input
-                  type="text"
-                  placeholder="Title"
-                  onChange={event => this.props.onChangePost({
-                    ...this.props.post,
-                    title: event.target.value,
-                  })}
-                  value={this.props.post.title}
-                />
-              </div>
-              <div className="ui fluid input post-description">
-                <input
-                  type="text"
-                  placeholder="Description"
-                  onChange={event => this.props.onChangePost({
-                    ...this.props.post,
-                    description: event.target.value,
-                  })}
-                  value={this.props.post.description}
-                />
-              </div>
-            </div>
-            <div className="post-avatar">
-              <MyImageUpload
-                selectedPostAvatar={url => this.props.onChangePost({
+        <div>
+          <div className="ui fluid input post-title">
+            <input
+              type="text"
+              placeholder="Title"
+              onChange={event => this.props.onChangePost({
                   ...this.props.post,
-                  avatarUrl: url,
+                  title: event.target.value,
                 })}
+              value={this.props.post.title}
+            />
+          </div>
+          <div className="ui fluid input post-description">
+            <input
+              type="text"
+              placeholder="Description"
+              onChange={event => this.props.onChangePost({
+                  ...this.props.post,
+                  description: event.target.value,
+                })}
+              value={this.props.post.description}
+            />
+          </div>
+        </div>
+        <div className="post-avatar">
+          <MyImageUpload
+            selectedPostAvatar={url => this.props.onChangePost({
+                ...this.props.post,
+                avatarUrl: url,
+              })}
+          />
+          {$avatarPreview}
+        </div>
+        <div className="ui segment">
+          <div className="ui icon buttons">
+            <button className="ui button" onClick={() => this.setAlignment('LEFT')}>
+              <i className="align left icon" />
+            </button>
+            <button className="ui button" onClick={() => this.setAlignment('CENTER')}>
+              <i className="align center icon" />
+            </button>
+            <button className="ui button" onClick={() => this.setAlignment('RIGHT')}>
+              <i className="align right icon" />
+            </button>
+            <button className="ui button" onClick={() => this.setAlignment('JUSTIFY')}>
+              <i className="align justify icon" />
+            </button>
+            <button className="ui button" onClick={() => this.onKeyStylingClick('BOLD')}>
+              <i className="bold icon" />
+            </button>
+            <button className="ui button" onClick={() => this.onKeyStylingClick('UNDERLINE')}>
+              <i className="underline icon" />
+            </button>
+            <button className="ui button" onClick={() => this.onKeyStylingClick('LINE-THROUGH')}>
+              <i className="text width icon" />
+            </button>
+            <button className="ui button" onClick={() => this.setBlockStyling('block-quote')}>
+              <i className="quote left icon" />
+            </button>
+            <button className="ui button" onClick={() => this.setBlockStyling('code-block')}>
+              <i className="code icon" />
+            </button>
+            <button className="ui button" onClick={() => this.props.selectLink()}>
+              <i className="linkify icon" />
+            </button>
+
+            <button className="ui button mediaButton" onClick={() => this.props.selectImage()}>
+              <i className="image icon" />
+            </button>
+            <button className="ui button" onClick={() => this.setBlockStyling('header-two')}>
+                H2
+            </button>
+            <button className="ui button" onClick={() => this.setBlockStyling('header-three')}>
+                H3
+            </button>
+            <button className="ui button" onClick={() => this.setBlockStyling('header-four')}>
+                H4
+            </button>
+            <button className="ui button" onClick={() => this.setBlockStyling('header-five')}>
+                H5
+            </button>
+
+          </div>
+          <div className="editor-content">
+            {this.state.isSelectingMedia &&
+              <MyMediaEditor selectedMediaUrl={value => this.props.addMedia(value)} />}
+            <div className="editor" onClick={this.focus}>
+              <Editor
+                editorState={editorState}
+                onChange={this.onChange}
+                handleKeyCommand={this.handleKeyCommand}
+                ref={(element) => { this.editor = element; }}
+                blockStyleFn={this.blockStyleFn}
+                customStyleMap={styleMap}
+                blockRendererFn={this.mediaBlockRenderer}
+                placeholder="Tell your story"
+                spellCheck
               />
-              {$avatarPreview}
-            </div>
-            <div className="ui segment">
-              <div className="ui icon buttons">
-                <button className="ui button" onClick={() => this.setAlignment('LEFT')}>
-                  <i className="align left icon" />
-                </button>
-                <button className="ui button" onClick={() => this.setAlignment('CENTER')}>
-                  <i className="align center icon" />
-                </button>
-                <button className="ui button" onClick={() => this.setAlignment('RIGHT')}>
-                  <i className="align right icon" />
-                </button>
-                <button className="ui button" onClick={() => this.setAlignment('JUSTIFY')}>
-                  <i className="align justify icon" />
-                </button>
-                <button className="ui button" onClick={() => this.onKeyStylingClick('BOLD')}>
-                  <i className="bold icon" />
-                </button>
-                <button className="ui button" onClick={() => this.onKeyStylingClick('UNDERLINE')}>
-                  <i className="underline icon" />
-                </button>
-                <button className="ui button" onClick={() => this.onKeyStylingClick('LINE-THROUGH')}>
-                  <i className="text width icon" />
-                </button>
-                <button className="ui button" onClick={() => this.setBlockStyling('block-quote')}>
-                  <i className="quote left icon" />
-                </button>
-                <button className="ui button" onClick={() => this.setBlockStyling('code-block')}>
-                  <i className="code icon" />
-                </button>
-                <button className="ui button" onClick={() => this.props.selectLink()}>
-                  <i className="linkify icon" />
-                </button>
-
-                <button className="ui button mediaButton" onClick={() => this.props.selectImage()}>
-                  <i className="image icon" />
-                </button>
-                <button className="ui button" onClick={() => this.setBlockStyling('header-two')}>
-                  H2
-                </button>
-                <button className="ui button" onClick={() => this.setBlockStyling('header-three')}>
-                  H3
-                </button>
-                <button className="ui button" onClick={() => this.setBlockStyling('header-four')}>
-                  H4
-                </button>
-                <button className="ui button" onClick={() => this.setBlockStyling('header-five')}>
-                  H5
-                </button>
-
-              </div>
-              <div className="editor-content">
-                {this.state.isSelectingMedia &&
-                <MyMediaEditor selectedMediaUrl={value => this.props.addMedia(value)} />}
-                <div className="editor" onClick={this.focus}>
-                  <Editor
-                    editorState={editorState}
-                    onChange={this.onChange}
-                    handleKeyCommand={this.handleKeyCommand}
-                    ref={(element) => { this.editor = element; }}
-                    blockStyleFn={this.blockStyleFn}
-                    customStyleMap={styleMap}
-                    blockRendererFn={this.mediaBlockRenderer}
-                    placeholder="Tell your story"
-                    spellCheck
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="tags">
-              <div>Tags: </div>
-              {postObject.tags.map(tag => (
-                <div key={tag.id}>{tag.name}</div>
-              ))}
-              <div className="ui input">
-                <input
-                  type="text"
-                  placeholder="Title"
-                  onChange={event => this.setState({ newTag: event.target.value })}
-                  value={this.state.newTag}
-                />
-              </div>
-            </div>
-            <div className="ui buttons">
-              <button className="ui button" onClick={() => this.onDiscardClick()}>Discard</button>
-              <div className="or" />
-              <button className="ui positive button" onClick={() => this.props.savePost(this.state.newTag, postObject.avatarUrl)}>Save</button>
             </div>
           </div>
-        }
+        </div>
+        <div className="tags">
+          <div>Tags: </div>
+
+          <div className="ui input">
+            <input
+              type="text"
+              placeholder="Title"
+              onChange={event => this.setState({ newTag: event.target.value })}
+              value={this.state.newTag}
+            />
+          </div>
+        </div>
+        <div className="ui buttons">
+          <button className="ui button" onClick={() => this.onDiscardClick()}>Discard</button>
+          <div className="or" />
+          <button className="ui positive button" onClick={() => this.props.savePost(this.state.newTag, postObject.avatarUrl)}>Save</button>
+        </div>
       </div>
     );
   }

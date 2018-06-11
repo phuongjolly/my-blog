@@ -4,7 +4,13 @@ import ExtendedRichUtils from '../plugins/ExtendedRichUtils';
 
 const initialState = {
   editorState: EditorState.createEmpty(),
-  post: null,
+  post: {
+    title: '',
+    description: '',
+    content: '',
+    avatarUrl: '',
+    tags: [],
+  },
   isSelectingMedia: false,
   urlType: '',
   message: undefined,
@@ -35,7 +41,13 @@ export function postEditorReducer(state = initialState, action) {
       return {
         ...state,
         editorState: EditorState.createEmpty(),
-        post: null,
+        post: {
+          title: '',
+          description: '',
+          content: '',
+          avatarUrl: '',
+          tags: [],
+        },
         isSelectingMedia: false,
         urlType: '',
         message: undefined,
@@ -85,7 +97,13 @@ export function postEditorReducer(state = initialState, action) {
       return {
         ...state,
         editorState: action.editorState,
-        post: null,
+        post: {
+          title: '',
+          description: '',
+          content: '',
+          avatarUrl: '',
+          tags: [],
+        },
         isSelectingMedia: false,
         urlType: '',
         message: undefined,
@@ -151,7 +169,7 @@ export const postEditorActions = {
         let editorState;
         let newId = id;
         let previousId = -1;
-        if (id !== undefined) {
+        if (id >= 0) {
           data = await get(`/api/posts/${id}`);
           editorState = EditorState.createWithContent(
             convertFromRaw(JSON.parse(data.content)),

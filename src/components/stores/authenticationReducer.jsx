@@ -19,6 +19,7 @@ const UPDATE_LOGIN_INFO = 'updateLoginInfo';
 export const LOGOUT_ACTION = 'logout';
 const LOGOUT_SUCCESSFUL = 'logoutSuccessful';
 const LOGOUT_FAIL = 'logoutFail';
+const GET_CURRENT_USER = 'getCurrentUser';
 
 export function authenticationReducer(state = initialState, action) {
   switch (action.type) {
@@ -72,6 +73,11 @@ export function authenticationReducer(state = initialState, action) {
         message: action.message,
       };
     }
+    case GET_CURRENT_USER: {
+      return {
+        currentUser: action.currentUser,
+      };
+    }
     default:
       return state;
   }
@@ -85,32 +91,23 @@ export const authenticationActions = {
       });
 
       let currentUser;
+
       try {
+        if (!loginInfo.email || !loginInfo.password) {
+          return;
+        }
+        await post('/api/users/login', loginInfo);
         currentUser = await get('/api/users/currentUser');
-        await post('/api/users/login', currentUser);
         dispatch({
           type: LOGIN_SUCCESSFUL,
           currentUser,
           message: 'Login successful',
         });
-      } catch (e) {
-        try {
-          if (!loginInfo.email || !loginInfo.password) {
-            return;
-          }
-          await post('/api/users/login', loginInfo);
-          currentUser = await get('/api/users/currentUser');
-          dispatch({
-            type: LOGIN_SUCCESSFUL,
-            currentUser,
-            message: 'Login successful',
-          });
-        } catch (error) {
-          dispatch({
-            type: LOGIN_FAIL,
-            message: 'Login fail',
-          });
-        }
+      } catch (error) {
+        dispatch({
+          type: LOGIN_FAIL,
+          message: 'Login fail',
+        });
       }
     };
   },
@@ -137,6 +134,16 @@ export const authenticationActions = {
           message: 'Error occurs!',
         });
       }
+    };
+  },
+
+  getCurrentUser() {
+    return async (dispatch) => {
+      const currentUser = await get('/api/users/currentUser');
+      dispatch({
+        type: GET_CURRENT_USER,
+        currentUser,
+      });
     };
   },
 };

@@ -24,7 +24,10 @@ const customHistory = createBrowserHistory();
 
 class App extends Component {
   async componentDidMount() {
-    this.props.login(null);
+    const currentUser = this.props.getCurrentUser();
+    if (currentUser) {
+      this.props.login(currentUser);
+    }
   }
 
   render() {
@@ -84,9 +87,12 @@ App.propTypes = {
   isActiveDialog: PropTypes.bool,
   message: PropTypes.string,
   login: PropTypes.func.isRequired,
+  currentUser: PropTypes.shape(),
+  getCurrentUser: PropTypes.func.isRequired,
 };
 
 App.defaultProps = {
   isActiveDialog: false,
   message: '',
+  currentUser: null,
 };
