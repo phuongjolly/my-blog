@@ -226,7 +226,7 @@ class PostEditor extends React.Component {
 
           </div>
           <div className="editor-content">
-            {this.state.isSelectingMedia &&
+            {this.props.isSelectingMedia &&
               <MyMediaEditor selectedMediaUrl={value => this.props.addMedia(value)} />}
             <div className="editor" onClick={this.focus}>
               <Editor
@@ -311,6 +311,7 @@ PostEditor.propTypes = {
   onChangeEditor: PropTypes.func.isRequired,
   selectLink: PropTypes.func.isRequired,
   selectImage: PropTypes.func.isRequired,
+  isSelectingMedia: PropTypes.bool,
 };
 
 PostEditor.defaultProps = {
@@ -323,6 +324,7 @@ PostEditor.defaultProps = {
   post: null,
   redirectToPost: false,
   previousId: -1,
+  isSelectingMedia: false,
 };
 
 Image.propTypes = {

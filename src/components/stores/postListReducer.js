@@ -4,6 +4,7 @@ const initState = {
   posts: [],
   isLoading: false,
   page: 1,
+  limitItem: 3,
   totalItems: 0,
   currentUser: null,
 };
@@ -43,11 +44,11 @@ export function postListReducer(state = initState, action) {
 }
 
 export const actions = {
-  loadPosts(name = '') {
+  loadPosts(name = '', page = 1) {
     return async (dispatch) => {
       dispatch({
         type: LOAD_POSTS,
-        page: 1,
+        page,
       });
 
       try {

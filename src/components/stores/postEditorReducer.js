@@ -63,8 +63,6 @@ export function postEditorReducer(state = initialState, action) {
         isLoading: false,
         post: action.data,
         editorState: action.editorState,
-        isSelectingMedia: false,
-        urlType: '',
         previousId: action.previousId,
       };
     }
@@ -133,12 +131,26 @@ export function postEditorReducer(state = initialState, action) {
         editorState: action.newEditorState,
       };
     }
+    case SELECT_IMAGE: {
+      return {
+        ...state,
+        isSelectingMedia: true,
+        urlType: 'image',
+      };
+    }
+    case SELECT_LINK: {
+      return {
+        ...state,
+        isSelectingMedia: true,
+        urlType: 'LINK',
+      };
+    }
     case ADD_MEDIA: {
       return {
         ...state,
         editorState: action.editorState,
-        isSelectingMedia: action.isSelectingMedia,
-        urlType: action.urlType,
+        isSelectingMedia: false,
+        urlType: '',
       };
     }
     case ON_CHANGE_POST: {
@@ -274,8 +286,6 @@ export const postEditorActions = {
   selectImage() {
     return {
       type: SELECT_IMAGE,
-      isSelectingMedia: true,
-      urlType: 'image',
     };
   },
 
@@ -286,8 +296,6 @@ export const postEditorActions = {
       if (!selection.isCollapsed()) {
         dispatch({
           type: SELECT_LINK,
-          isSelectingMedia: true,
-          urlType: 'LINK',
         });
       }
     };
@@ -325,8 +333,6 @@ export const postEditorActions = {
       dispatch({
         type: ADD_MEDIA,
         editorState: newEditorState,
-        isSelectingMedia: false,
-        urlType: '',
       });
     };
   },

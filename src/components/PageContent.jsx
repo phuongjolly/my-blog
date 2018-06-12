@@ -38,27 +38,36 @@ class PageContent extends React.Component {
       );
     }
     return (
-      <div className="page-container">
+      <div>
         {this.props.isLoading &&
         <div className="loading"><ReactLoading type="cubes" color="#666" /></div>}
-        {this.props.posts.map(post => (
-                    post.display && (
-                    <div className="item-box" key={post.id}>
-                      <div className="photo">
-                        <Link to={`/posts/${post.id}`}>
-                          <img src={post.avatarUrl} alt="myBlog" />
-                        </Link>
-                      </div>
-                      <div className="info-content">
-                        <div className="info-header">{post.title}</div>
-                        <div className="info-detail">
-                          {post.description}
-                        </div>
-                      </div>
-                    </div>
-                    )
-                ))}
-        {addNewButton}
+        <div className="page-container">
+          {this.props.posts.map(post => (
+            post.display && (
+              <div className="item-box" key={post.id}>
+                <div className="photo">
+                  <Link to={`/posts/${post.id}`}>
+                    <img src={post.avatarUrl} alt="myBlog" />
+                  </Link>
+                </div>
+                <div className="info-content">
+                  <div className="info-header">{post.title}</div>
+                  <div className="info-detail">
+                    {post.description}
+                  </div>
+                </div>
+              </div>
+            )
+          ))}
+          {addNewButton}
+        </div>
+        {!this.props.isLoading &&
+        <div className="show-more">
+          <button className="show-more-button">
+            Show More
+          </button>
+        </div>
+        }
       </div>
     );
   }

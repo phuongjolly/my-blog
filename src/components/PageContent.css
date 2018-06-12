@@ -154,3 +154,26 @@
     justify-content: space-around;
     width: 100%;
 }
+
+.show-more {
+    width: 100%;
+    padding-left: 15px;
+    padding-right: 15px;
+    margin: 20px 0;
+    text-align: center;
+}
+
+.show-more .show-more-button {
+    min-width: 200px;
+    display: inline-block;
+    border: 2px solid #ededed;
+    transition: border 250ms ease-in-out;
+    color: #e09a0e;
+    background-color: #FFFFFF;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.show-more .show-more-button:hover {
+    cursor: pointer;
+}
