@@ -9,14 +9,14 @@ const initialState = {
   message: '',
   redirectToPreviousPage: false,
   redirectToHome: false,
-  loading: false,
+  isLoading: false,
 };
 
-export const LOGIN_ACTION = 'login';
+export const LOGIN_ACTION = 'loginAction';
 const LOGIN_SUCCESSFUL = 'loginSuccessful';
 const LOGIN_FAIL = 'loginFail';
 const UPDATE_LOGIN_INFO = 'updateLoginInfo';
-export const LOGOUT_ACTION = 'logout';
+export const LOGOUT_ACTION = 'logoutAction';
 const LOGOUT_SUCCESSFUL = 'logoutSuccessful';
 const LOGOUT_FAIL = 'logoutFail';
 const GET_CURRENT_USER = 'getCurrentUser';
@@ -36,7 +36,7 @@ export function authenticationReducer(state = initialState, action) {
     case LOGIN_SUCCESSFUL: {
       return {
         currentUser: action.currentUser,
-        isLoading: true,
+        isLoading: false,
         redirectToPreviousPage: true,
       };
     }
@@ -63,7 +63,7 @@ export function authenticationReducer(state = initialState, action) {
       return {
         currentUser: null,
         redirectToHome: true,
-        isLoading: true,
+        isLoading: false,
         redirectToPreviousPage: true,
       };
     }
@@ -139,11 +139,15 @@ export const authenticationActions = {
 
   getCurrentUser() {
     return async (dispatch) => {
-      const currentUser = await get('/api/users/currentUser');
-      dispatch({
-        type: GET_CURRENT_USER,
-        currentUser,
-      });
+      try {
+        const currentUser = await get('/api/users/currentUser');
+        dispatch({
+          type: GET_CURRENT_USER,
+          currentUser,
+        });
+      } catch (e) {
+        console.log('current user is null');
+      }
     };
   },
 };

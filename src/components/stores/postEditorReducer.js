@@ -214,20 +214,22 @@ export const postEditorActions = {
       const postObject = getState().postEditor.post;
       try {
         const tagsName = [];
-        postObject.tags.map(tag => (
-          tagsName.push(tag.name)
-        ));
+        if (postObject.tags) {
+          postObject.tags.map(tag => (
+            tagsName.push(tag.name)
+          ));
+        }
+
         let tag = null;
-        if (newTag !== '' && !tagsName.includes(newTag)) {
+        if (newTag !== '' && tagsName && !tagsName.includes(newTag)) {
           tag = { name: newTag };
         }
-        console.log(postObject);
 
         await post('/api/posts', {
           ...postObject,
           content: JSON.stringify(convertToRaw(editorState.getCurrentContent())),
           avatarUrl,
-          tags: [...postObject.tags, tag],
+          tags: postObject.tags ? [...postObject.tags, tag] : tag,
         });
 
         dispatch({

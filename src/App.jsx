@@ -24,9 +24,9 @@ const customHistory = createBrowserHistory();
 
 class App extends Component {
   async componentDidMount() {
-    const currentUser = this.props.getCurrentUser();
-    if (currentUser) {
-      this.props.login(currentUser);
+    this.props.getCurrentUser();
+    if (this.props.currentUser) {
+      this.props.login(this.props.currentUser);
     }
   }
 
