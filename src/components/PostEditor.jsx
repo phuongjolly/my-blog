@@ -114,7 +114,6 @@ class PostEditor extends React.Component {
     }
   };
 
-
   decorator = new CompositeDecorator([
     {
       strategy: findLinkEntities,

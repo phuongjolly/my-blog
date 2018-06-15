@@ -1,30 +1,26 @@
 import React from 'react';
-import { PropTypes } from 'prop-types';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import ReactLoading from 'react-loading';
 import queryString from 'query-string';
 import './PageContent.css';
-import { postListActions } from './stores/postListReducer';
+import { postTagsActions } from './stores/postTagsReducer';
 
-class PageContent extends React.Component {
+class PageByTags extends React.Component {
   componentDidMount() {
+    console.log('go to load post by tag');
     if (this.props.posts.length === 0) {
-      const { name } = this.props.match.params;
       const queryParsed = queryString.parse(this.props.location.search);
-      if (name === undefined) {
-        this.props.loadPosts(queryParsed.page, queryParsed.size);
-      }
+      this.props.loadPostsByTag(queryParsed.name);
     }
-    this.props.getPostCount();
   }
 
   componentWillReceiveProps(newProps) {
-    const oldPage = queryString.parse(this.props.location.search).page;
-    const { page } = queryString.parse(newProps.location.search);
-
-    if ((oldPage === undefined && oldPage === 1) || (page !== oldPage)) {
-      this.props.loadPosts(+page, 3);
+    const oldName = queryString.parse(this.props.location.search).name;
+    const { name } = queryString.parse(newProps.location.search);
+    if (name !== oldName) {
+      this.props.loadPostsByTag(name);
     }
   }
 
@@ -65,57 +61,31 @@ class PageContent extends React.Component {
           ))}
           {addNewButton}
         </div>
-        {(((this.props.page + 1) * this.props.limitItem) < this.props.totalItems) &&
-        <div className="show-more">
-          <button className="show-more-button">
-            <Link to={`/posts?page=${parseInt(this.props.page, 10) + 1}&size=${this.props.limitItem}`}>
-              Show More
-            </Link>
-          </button>
-        </div>
-        }
       </div>
     );
   }
 }
 
 export default connect(
-  state => ({ ...state.authentication, ...state.postList }),
-  postListActions,
-)(PageContent);
+  state => ({ ...state.authentication, ...state.postsByTag }),
+  postTagsActions,
+)(PageByTags);
 
 
-PageContent.propTypes = {
+PageByTags.propTypes = {
   isLoading: PropTypes.bool,
   posts: PropTypes.arrayOf(PropTypes.shape()),
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      name: PropTypes.string,
-    }),
-  }),
-  totalItems: PropTypes.number,
-  loadPosts: PropTypes.func.isRequired,
+  loadPostsByTag: PropTypes.func.isRequired,
   currentUser: PropTypes.shape(),
-  page: PropTypes.number,
-  limitItem: PropTypes.number,
   location: PropTypes.shape({
     search: PropTypes.string,
   }),
-  getPostCount: PropTypes.func.isRequired,
 };
 
-PageContent.defaultProps = {
+PageByTags.defaultProps = {
   isLoading: false,
   posts: [],
-  match: {
-    params: {
-      name: '',
-    },
-  },
-  totalItems: 0,
   currentUser: null,
-  page: 0,
-  limitItem: 3,
   location: {
     search: '',
   },

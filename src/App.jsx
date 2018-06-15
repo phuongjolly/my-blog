@@ -15,10 +15,10 @@ import MyProfile from './components/MyProfile';
 import UserList from './components/UserList';
 import UserRole from './components/UserRole';
 import Loading from './components/Loading';
-import Tags from './components/Tags';
 import DialogModal from './components/DialogModal';
 import { dialogActions } from './components/stores/dialogReducer';
 import { authenticationActions } from './components/stores/authenticationReducer';
+import PageByTags from './components/PageByTags';
 
 const customHistory = createBrowserHistory();
 
@@ -44,12 +44,12 @@ class App extends Component {
                 <Route path="/addRole" component={UserRole} />
                 <Route path="/user/register" component={Register} />
                 <Route path="/user/login" component={Login} />
-                <Route path="/posts/tags/:name" component={Tags} />
+                <Route path="/tags" component={PageByTags} />
                 <Route path="/posts/add" component={PostEditor} />
                 <Route path="/posts/:id/edit" component={PostEditor} />
                 <Route path="/posts/:id" component={Post} />
-                <Route path="/tags/:name" component={PageContent} />
-                <Route component={PageContent} />
+                <Route path="/posts" component={PageContent} />
+                <Route exact path="/" component={PageContent} />
               </Switch>
               <DialogModal
                 show={this.props.isActiveDialog}

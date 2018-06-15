@@ -12,6 +12,7 @@
     "history": "^4.7.2",
     "immutable": "^3.8.2",
     "prop-types": "^15.6.1",
+    "query-string": "^6.1.0",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
     "react-html-parser": "^2.0.2",

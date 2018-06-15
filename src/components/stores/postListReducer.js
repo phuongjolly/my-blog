@@ -3,7 +3,7 @@ import { get } from '../Http';
 const initState = {
   posts: [],
   isLoading: false,
-  page: 1,
+  page: 0,
   limitItem: 3,
   totalItems: 0,
   currentUser: null,
@@ -12,6 +12,7 @@ const initState = {
 const LOAD_POSTS = 'loadPosts';
 const LOAD_POSTS_SUCCESSFUL = 'loadPosts_Successful';
 const LOAD_POSTS_FAIL = 'loadPosts_Fail';
+const GET_TOTAL_ITEMS = 'getTotalItems';
 
 export function postListReducer(state = initState, action) {
   switch (action.type) {
@@ -25,9 +26,8 @@ export function postListReducer(state = initState, action) {
     case LOAD_POSTS_SUCCESSFUL: {
       return {
         ...state,
-        posts: action.data,
+        posts: state.posts.length > 0 ? state.posts.concat(action.data) : action.data,
         page: action.page,
-        totalItems: action.totalItems,
         isLoading: false,
         currentUser: action.currentUser,
       };
@@ -39,40 +39,36 @@ export function postListReducer(state = initState, action) {
         message: 'Load posts failed!!!',
       };
     }
+    case GET_TOTAL_ITEMS: {
+      return {
+        ...state,
+        totalItems: action.totalItems,
+      };
+    }
     default: return state;
   }
 }
 
-export const actions = {
-  loadPosts(name = '', page = 1) {
+export const postListActions = {
+  loadPosts(page = 0, size = 3) {
+    console.log('call loadPosts');
     return async (dispatch) => {
       dispatch({
         type: LOAD_POSTS,
-        page,
       });
 
       try {
-        let posts;
-        if (name === '') {
-          posts = await get('/api/posts/');
-          console.log('=======');
-          console.log(posts);
-        } else {
-          posts = await get(`/api/posts/tags/${name}`);
-        }
-
+        const posts = await get(`/api/posts/page?page=${page}&size=${size}`);
         let currentUser;
         try {
           currentUser = await get('/api/users/currentUser');
         } catch (e) {
           console.log('get currentUser is failed');
         }
-
         dispatch({
           type: LOAD_POSTS_SUCCESSFUL,
           data: posts,
-          page: 1,
-          totalItems: posts.length,
+          page,
           currentUser,
         });
       } catch (e) {
@@ -80,6 +76,16 @@ export const actions = {
           type: LOAD_POSTS_FAIL,
         });
       }
+    };
+  },
+
+  getPostCount() {
+    return async (dispatch) => {
+      const totalItems = await get('/api/posts/totalItems');
+      dispatch({
+        type: GET_TOTAL_ITEMS,
+        totalItems,
+      });
     };
   },
 };
