@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import ReactLoading from 'react-loading';
-import queryString from 'query-string';
 import './PageContent.css';
 import { postTagsActions } from './stores/postTagsReducer';
 
@@ -11,14 +10,16 @@ class PageByTags extends React.Component {
   componentDidMount() {
     console.log('go to load post by tag');
     if (this.props.posts.length === 0) {
-      const queryParsed = queryString.parse(this.props.location.search);
-      this.props.loadPostsByTag(queryParsed.name);
+      const params = new URLSearchParams(this.props.location.search);
+      this.props.loadPostsByTag(params.get('name'));
     }
   }
 
   componentWillReceiveProps(newProps) {
-    const oldName = queryString.parse(this.props.location.search).name;
-    const { name } = queryString.parse(newProps.location.search);
+    const oldParams = new URLSearchParams(this.props.location.search);
+    const newParams = new URLSearchParams(newProps.location.search);
+    const oldName = oldParams.get('name');
+    const name = newParams.get('name');
     if (name !== oldName) {
       this.props.loadPostsByTag(name);
     }

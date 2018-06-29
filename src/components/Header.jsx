@@ -48,10 +48,7 @@ class Header extends React.Component {
       <div className="">
         <div className="main-header">
           <div className="header-logo">
-            <img
-              src="https://demokaliumsites-laborator.netdna-ssl.com/freelancer/wp-content/uploads/2015/03/dp.png"
-              alt="logo"
-            />
+            <img src="https://c2.staticflickr.com/2/1789/41965143275_b762350741_o.png" alt="icon" />
           </div>
 
           {helloMessage}

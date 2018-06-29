@@ -123,10 +123,9 @@ class PostEditor extends React.Component {
 
   render() {
     const { editorState } = this.props;
-    const postObject = this.props.post;
     let $avatarPreview = '';
-    if (postObject && postObject.avatarUrl) {
-      $avatarPreview = <img src={postObject.avatarUrl} alt="avatar" />;
+    if (this.props.post && this.props.post.avatarUrl) {
+      $avatarPreview = <img src={this.props.post.avatarUrl} alt="avatar" />;
     } else {
       $avatarPreview = <img src="https://demokaliumsites-laborator.netdna-ssl.com/freelancer/wp-content/uploads/2015/03/8tracks_covers01_905-655x545.jpg" alt="avatar" />;
     }
@@ -257,7 +256,7 @@ class PostEditor extends React.Component {
         <div className="ui buttons">
           <button className="ui button" onClick={() => this.onDiscardClick()}>Discard</button>
           <div className="or" />
-          <button className="ui positive button" onClick={() => this.props.savePost(this.state.newTag, postObject.avatarUrl)}>Save</button>
+          <button className="ui positive button" onClick={() => this.props.savePost(this.state.newTag, this.props.post.avatarUrl)}>Save</button>
         </div>
       </div>
     );

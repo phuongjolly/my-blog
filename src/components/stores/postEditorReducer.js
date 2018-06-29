@@ -1,6 +1,7 @@
 import { AtomicBlockUtils, convertFromRaw, convertToRaw, EditorState, Entity, RichUtils } from 'draft-js';
 import { get, post } from '../Http';
 import ExtendedRichUtils from '../plugins/ExtendedRichUtils';
+import { postListActions } from './postListReducer';
 
 const initialState = {
   editorState: EditorState.createEmpty(),
@@ -209,6 +210,9 @@ export const postEditorActions = {
   },
 
   savePost(newTag, avatarUrl) {
+    console.log('has just save post editor');
+    console.log(avatarUrl);
+    console.log('=========');
     return async (dispatch, getState) => {
       const { editorState } = getState().postEditor;
       const postObject = getState().postEditor.post;
@@ -225,12 +229,17 @@ export const postEditorActions = {
           tag = { name: newTag };
         }
 
-        await post('/api/posts', {
+        const newPost = {
           ...postObject,
           content: JSON.stringify(convertToRaw(editorState.getCurrentContent())),
           avatarUrl,
           tags: postObject.tags ? [...postObject.tags, tag] : tag,
-        });
+        };
+
+        await post('/api/posts', newPost);
+
+        const postList = getState().postList.posts;
+        postListActions.updatePosts(postList.length === 0 ? newPost : postList.concat(newPost));
 
         dispatch({
           type: EDIT_POST_SUCCESSFUL,
@@ -340,6 +349,9 @@ export const postEditorActions = {
   },
 
   onChangePost(postObject) {
+    console.log('has just changed post editor');
+    console.log(postObject);
+    console.log('=========');
     return {
       type: ON_CHANGE_POST,
       data: postObject,

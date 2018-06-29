@@ -1,9 +1,8 @@
 import React from 'react';
-import { PropTypes } from 'prop-types';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import ReactLoading from 'react-loading';
-import queryString from 'query-string';
 import './PageContent.css';
 import { postListActions } from './stores/postListReducer';
 
@@ -11,21 +10,11 @@ class PageContent extends React.Component {
   componentDidMount() {
     if (this.props.posts.length === 0) {
       const { name } = this.props.match.params;
-      const queryParsed = queryString.parse(this.props.location.search);
       if (name === undefined) {
-        this.props.loadPosts(queryParsed.page, queryParsed.size);
+        this.props.loadPosts(this.props.page || 0, this.props.limitItem);
       }
     }
     this.props.getPostCount();
-  }
-
-  componentWillReceiveProps(newProps) {
-    const oldPage = queryString.parse(this.props.location.search).page;
-    const { page } = queryString.parse(newProps.location.search);
-
-    if ((oldPage === undefined && oldPage === 1) || (page !== oldPage)) {
-      this.props.loadPosts(+page, 3);
-    }
   }
 
   render() {
@@ -67,10 +56,11 @@ class PageContent extends React.Component {
         </div>
         {(((this.props.page + 1) * this.props.limitItem) < this.props.totalItems) &&
         <div className="show-more">
-          <button className="show-more-button">
-            <Link to={`/posts?page=${parseInt(this.props.page, 10) + 1}&size=${this.props.limitItem}`}>
+          <button
+            className={this.props.isLoading ? 'ui loading show-more-button' : 'show-more-button'}
+            onClick={() => this.props.loadPosts((this.props.page + 1), this.props.limitItem)}
+          >
               Show More
-            </Link>
           </button>
         </div>
         }
@@ -98,9 +88,6 @@ PageContent.propTypes = {
   currentUser: PropTypes.shape(),
   page: PropTypes.number,
   limitItem: PropTypes.number,
-  location: PropTypes.shape({
-    search: PropTypes.string,
-  }),
   getPostCount: PropTypes.func.isRequired,
 };
 
@@ -116,7 +103,4 @@ PageContent.defaultProps = {
   currentUser: null,
   page: 0,
   limitItem: 3,
-  location: {
-    search: '',
-  },
 };

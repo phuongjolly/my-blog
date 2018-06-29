@@ -4,15 +4,18 @@ const initState = {
   posts: [],
   isLoading: false,
   page: 0,
-  limitItem: 3,
+  limitItem: 6,
   totalItems: 0,
   currentUser: null,
+  needToLoad: false,
 };
 
 const LOAD_POSTS = 'loadPosts';
 const LOAD_POSTS_SUCCESSFUL = 'loadPosts_Successful';
 const LOAD_POSTS_FAIL = 'loadPosts_Fail';
 const GET_TOTAL_ITEMS = 'getTotalItems';
+const UPDATE_POSTS = 'updatePostList';
+const UPDATE_NEED_TO_LOAD = 'updateNeedToLoad';
 
 export function postListReducer(state = initState, action) {
   switch (action.type) {
@@ -30,6 +33,7 @@ export function postListReducer(state = initState, action) {
         page: action.page,
         isLoading: false,
         currentUser: action.currentUser,
+        needToLoad: false,
       };
     }
     case LOAD_POSTS_FAIL: {
@@ -37,6 +41,7 @@ export function postListReducer(state = initState, action) {
         ...state,
         isLoading: false,
         message: 'Load posts failed!!!',
+        needToLoad: false,
       };
     }
     case GET_TOTAL_ITEMS: {
@@ -45,13 +50,24 @@ export function postListReducer(state = initState, action) {
         totalItems: action.totalItems,
       };
     }
+    case UPDATE_POSTS: {
+      return {
+        ...state,
+        posts: action.posts,
+      };
+    }
+    case UPDATE_NEED_TO_LOAD: {
+      return {
+        ...state,
+        needToLoad: action.needToLoad,
+      };
+    }
     default: return state;
   }
 }
 
 export const postListActions = {
-  loadPosts(page = 0, size = 3) {
-    console.log('call loadPosts');
+  loadPosts(page = 0, size = 6) {
     return async (dispatch) => {
       dispatch({
         type: LOAD_POSTS,
@@ -86,6 +102,22 @@ export const postListActions = {
         type: GET_TOTAL_ITEMS,
         totalItems,
       });
+    };
+  },
+
+  updatePosts(posts) {
+    console.log('post has just updated');
+    console.log(posts);
+    return {
+      type: UPDATE_POSTS,
+      posts,
+    };
+  },
+
+  updateNeedToLoad(needToLoad) {
+    return {
+      type: UPDATE_NEED_TO_LOAD,
+      needToLoad,
     };
   },
 };
